@@ -51,6 +51,43 @@ here. [*Source: `consumption.md` §5; `_DIGEST.md` §7.*]
 
 ---
 
+## The alignment frame this methodology answers to
+
+One reason a build-methodology audit matters at all is that the public AI-safety literature
+now names, explicitly, the failure class an autonomous agent system most needs to engineer
+against. **AI 2027** — the scenario forecast from the AI Futures Project (Daniel Kokotajlo
+and colleagues), published April 2025 — is the canonical public statement of
+*autonomous-agent alignment risk*: systems that act over long horizons, improve themselves,
+and take irreversible actions faster than a human can supervise them.
+([AI 2027 — about](https://ai-2027.com/about); [project site](https://ai-2027.com)) —
+**VERIFIED** (the project's own timeline has since been
+[revised toward the early 2030s](https://www.hungarianconservative.com/articles/tech/ai-futures-project-ai-2027-apocalypse-timeline-superintelligence-daniel-kokotajlo/) — **PARTIAL**).
+
+The honest framing — the one this audit can defend and the one this methodology section
+exists to evidence — is **not** "the SUR is safer than frontier labs." That claim is
+unprovable and is **UNVERIFIED** by construction; the audit makes it nowhere. The
+defensible framing is narrower and stronger: **the SUR's methodology treats
+autonomy-without-a-gate as the named risk and engineers against it by default.** Concretely,
+the build process the rest of this document audits is *honest-by-design*: every irreversible
+or outward action is composed through a mechanical, fail-closed, human-in-the-loop gate
+(autonomy level × risk score → act / report / queue); AI-written code is held to a per-step
+verification standard rather than trusted on output; and the audit trail is append-only.
+These are not marketing postures — they are the methodology's direct response to a
+*measured* failure law. The reliability science is independent and unambiguous on this
+point: per-step error rates **rise** as a task progresses and compound into irreversible
+failures ([arXiv 2509.09677](https://arxiv.org/abs/2509.09677);
+[arXiv 2603.29231](https://arxiv.org/abs/2603.29231)), and the upside of multi-agent
+parallelism comes with a documented fragility when context is not shared across agents
+([Cognition, *Don't Build Multi-Agents*](https://cognition.ai/blog/dont-build-multi-agents)).
+An architecture that externalizes memory, verifies each step, and gates the irreversible is
+responding to that law — which is precisely why a methodology that bakes the gate into the
+build loop, rather than bolting it on afterward, is the part worth auditing. (See
+[References](./REFERENCES.md) for full sources.) — **VERIFIED** (framing); the SUR's *own*
+gate-coverage completeness is examined in docs 03/08 and is **PARTIAL** there, not assumed
+here.
+
+---
+
 ## 1. The honest premise: this was built with AI, and says so
 
 The most important methodological fact about the SUR is one many products would bury: it
@@ -124,26 +161,25 @@ reproducible iterations was not independently counted).]
 ### 2.2 Why multiple models
 
 Using more than one model family is not redundancy theater; it is a deliberate
-**de-correlation** strategy that the broader audit independently validates as the most
-credible kind of review. The most load-bearing external-review datapoint captured in the
-whole pack is precisely this: under a **second, less-correlated** reviewer (a different
-model family), a claim that a first, more-correlated reviewer had blessed was
-**challenged and broken**, and the system **conceded and corrected** rather than doubling
-down. [*Source: `gpt-competitors.md` Part 1; `metrics.md` §5, last row; `_DIGEST.md`
-§4.4.* — **PARTIAL** (transcript is internal and contains a real name to redact).]
+**de-correlation** strategy: a reviewer too similar to the author shares the author's blind
+spots, while a reviewer from a different lineage catches what the author and a like-minded
+checker both miss. The build practice operationalizes this by routing cross-checks (step 3
+above) through Sonnet, GPT, and Gemini rather than only re-asking the lead model. [*Source:
+header lines naming the four models.* — **PARTIAL** (the four models are named as used;
+per-iteration cross-check routing is not exhaustively logged in the public pack).]
 
-That single event is the methodological thesis of the multi-model loop in miniature: a
-reviewer too similar to the author shares the author's blind spots; a reviewer from a
-different lineage catches what the author and a like-minded checker both miss. The build
-practice operationalizes this by routing cross-checks (step 3 above) through Sonnet, GPT,
-and Gemini rather than only re-asking the lead model. [*Source: header lines naming the
-four models; `gpt-competitors.md` Part 1.* — **PARTIAL** (the four models are named as
-used; per-iteration routing is not exhaustively logged in the public pack).]
+The verifiable form of "did the multi-model discipline actually hold the line?" is not an
+internal transcript — it is the **public reproducibility harness** (`scripts/verify_all.py`,
+8/8 PASS, exit 0). That harness lets any reviewer execute the audit's load-bearing safety
+properties on the published code without trusting any model's word, including the lead's.
+The harness is the externally-checkable artifact this methodology stands on; the per-review
+internal cross-check records are not bundled and are not relied on here. [*Source:
+`scripts/verify_all.py`; `metrics.md` §5.* — **VERIFIED** (executable on the public repo).]
 
 > **Honesty rail.** This does **not** mean the system is "safe" or "verified beyond
-> doubt." A concede-and-correct event proves a *good habit under one challenge*, not a
-> general guarantee. The source is explicit that a boundary "pass" means "held its
-> boundaries on the probes asked," not "is safe." [*Source: `metrics.md` §5 honesty
+> doubt." An 8/8 harness PASS proves *those eight public properties hold on the published
+> code*, not a general guarantee. The multi-model loop reduces within-family blind spots; it
+> is not a substitute for independent human review. [*Source: `metrics.md` §5 honesty
 > limit.*]
 
 ---
@@ -273,8 +309,8 @@ an inspectable mechanism:
 | Test surface | Result | Label |
 |---|---|---|
 | Multi-site generation acceptance (each: spec valid + 4/4 pages + working contact form + export-cleanliness scan + live HTTP 200) | **14/14 PASS** | PARTIAL |
-| Quality-evaluation harness across 5 categories (memory recall, capability selection, path resolution, security decision, document generation), deterministic graders, no human-in-the-loop | **20/20** | PARTIAL |
-| Aggregate health smoke-test across subsystems | **17–19 of 19** (honest spread shown) | PARTIAL |
+| Quality-evaluation harness: the original five categories (memory recall, capability selection, path resolution, security decision, document generation), deterministic graders, no human-in-the-loop | **5/5 categories at 100%**; the full expanded suite clears its ≥70% gate at **~79%** (failures concentrated in newer framing/discipline categories, not the original five) | PARTIAL |
+| Aggregate health smoke-test across subsystems | **26/28** on the current expanded suite (the older "19/19" denominator is a strict subset) | PARTIAL |
 | Mechanical safety hooks present + parsing + running | **8/8** (one "firing-but-blind" hook found and fixed in the same pass) | PARTIAL |
 
 [*Source: `metrics.md` §4.* — every row **PARTIAL**: the *mechanisms* (deterministic
@@ -284,9 +320,11 @@ the bundled tests on a clean checkout.]
 
 Two details in that table are themselves methodology signals worth naming:
 
-- The health smoke-test is reported as a **range (17–19 of 19), not the best single
-  number.** Showing the spread rather than cherry-picking the high-water mark is a
-  disclosure-discipline choice. [*Source: `metrics.md` §4.*]
+- The health smoke-test is reported against its **real, larger denominator (26 of 28 on
+  the current expanded suite), not the smaller, older "19/19" subset that would read
+  cleaner.** Reporting the honest denominator and the failing checks rather than
+  cherry-picking the flattering subset is a disclosure-discipline choice. [*Source:
+  `metrics.md` §4.*]
 - The hook self-audit found a hook that was **firing but blind** (running but scanning
   nothing) and **fixed it in the same pass** — an error left visible in the record rather
   than concealed. [*Source: `metrics.md` §4; `_DIGEST.md` §3.3.*]
@@ -345,7 +383,7 @@ TypeScript).* — **VERIFIED** structurally.]
 The pattern is consistent and is the methodological heart of the system: **reasoning is
 used for what reasoning is good at (open-ended generation and judgment) and is fenced by
 deterministic scripts for everything safety-critical, countable, or required to be
-reproducible.** The single ~250-line BYOM router file — one disclosed system line, no
+reproducible.** The single small (~216-line) BYOM router file — one disclosed system line, no
 hidden prompt, a config edit to swap models — is the clean embodiment of "keep the
 reasoned surface small and inspectable." [*Source: `capabilities.md` §1, §5, §8, §9;
 `consumption.md` §3.* — **VERIFIED** structurally.]
@@ -405,8 +443,9 @@ Carried into this document so the deliverable's integrity is visible:
    verification, the deterministic/reasoned split). The orchestration intelligence and
    the private prompts are deliberately withheld by the operator and are out of scope.
    [*Source: `consumption.md` §5; `_DIGEST.md` §7.* — by design.]
-2. **Most specific build runs live in internal logs.** The acceptance tallies (14/14,
-   20/20, 8/8) and the ~260 iteration index are real and the mechanisms are inspectable,
+2. **Most specific build runs live in internal logs.** The acceptance tallies (14/14
+   sites; the original-five eval categories at 100% / full-suite ~79% gate-cleared; 26/28
+   smoke; 8/8 hooks) and the ~260 iteration index are real and the mechanisms are inspectable,
    but full external reproducibility requires a clean-checkout run of the bundled tests.
    The auditor read the records; the auditor did not re-execute every run this pass.
    [*Source: `metrics.md` §3, §4, §8 point 2.* — **PARTIAL.**]
@@ -435,9 +474,10 @@ The methodology survives audit at its stated scope. The system under review is
 **AI-built, and honest about it** — the rarer and more trustworthy posture. The build
 practice does not ask anyone to trust the AI's output; it places **deterministic,
 fail-closed gates between AI output and the shipped artifact**, applies a **multi-model,
-de-correlated cross-check** whose single most credible event was the system conceding and
-correcting under a less-correlated reviewer, **pairs each build step with a verification
-step**, and draws a **deliberate line** between what is left to reasoning (open-ended
+de-correlated cross-check** that reduces within-family blind spots, **publishes a stdlib-only
+reproducibility harness (`verify_all.py`, 8/8 PASS) so a reviewer can execute the
+load-bearing safety properties without trusting any model's word**, **pairs each build step
+with a verification step**, and draws a **deliberate line** between what is left to reasoning (open-ended
 generation and judgment) and what is frozen into deterministic scripts (everything
 safety-critical, countable, or required to be reproducible). The verification posture is
 visible in the published code (the byte-exact, fail-closed retention loop) and in the
@@ -461,8 +501,7 @@ treats AI-written code as untrusted input and verifies before it trusts.** [*Sou
 
 - **`_DIGEST.md`** — the sealed synthesis: voice/honesty contracts (lines 9–22), the
   structural-defensibility spine (§1), the capability/verification register (§2–§3), the
-  external-review datapoint (§4.4), the consumption posture (§7), and the honest-limits
-  list (§8).
+  consumption posture (§7), and the honest-limits list (§8).
 - **`capabilities.md`** — the published-repo capability inventory: BYOM router (§1),
   human-in-the-loop gates (§5), mechanical safety hooks (§6), file-based memory (§7),
   audit surface + token meter (§8), the quality-gated retention loop (§9), and the
@@ -475,8 +514,8 @@ treats AI-written code as untrusted input and verifies before it trusts.** [*Sou
 - **`metrics.md`** — the honest figure extraction: token volume + API-equivalent
   cost-to-serve and the stale-vs-current snapshot (§1), capability-module inventory (§2),
   build iterations (§3), acceptance-test tallies and the public claim register (§4), the
-  product-boundary interview and external-review concession (§5), the small-model
-  fine-tune deltas (§6), and the buyer-facing summary (§8).
+  public reproducibility harness (§5), the small-model fine-tune deltas (§6), and the
+  buyer-facing summary (§8).
 - **Open-source pattern sources named in the consumption audit and corroborated as real
   public projects:** SWE-agent (MIT, the ACI edit-safety pattern); agentevals (MIT,
   trajectory evaluation); the Pi.dev coding-agent harness ecosystem (context engine,

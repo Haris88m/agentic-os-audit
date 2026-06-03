@@ -6,7 +6,7 @@
 
 ## How to read this document
 
-This is the numbers chapter of an independent third-party technical audit of the system under review (the "SUR" or "the platform"). It exists to do one thing well: present the platform's quantitative claims **honestly** — every non-trivial figure carries an explicit confidence label, every cost figure carries the API-equivalent caveat, and every multiplier states its scope.
+This is the numbers chapter of a structured technical audit of the system under review (the "SUR" or "the platform"), applying a labeled-evidence standard. It exists to do one thing well: present the platform's quantitative claims **honestly** — every non-trivial figure carries an explicit confidence label, every cost figure carries the API-equivalent caveat, and every multiplier states its scope. (On what "independent" means for this audit — the evidence standard, not the auditor's relationship to the subject — see `00-executive-summary.md` and `08-limits-and-reproducibility.md` §6.)
 
 Auditor integrity is the deliverable here. A metrics chapter that flatters the subject is worthless; a metrics chapter that down-labels its own evidence where the proof is thin is, paradoxically, the more trustworthy artifact. The source materials already do this self-down-labelling (see §6), and this chapter preserves it.
 
@@ -104,8 +104,8 @@ These are concrete, counted test outcomes recorded in build artifacts. They are 
 | — spec-validation sub-step | 14/14 PASS | PARTIAL | Same run, validation gate. |
 | — page-presence sub-step | 4/4 pages × 14 sites | PARTIAL | Same run. |
 | — live-serve sub-step | 14/14 returned HTTP 200 | PARTIAL | Same run, against a local HTTP server. |
-| Quality-evaluation harness (full run) | **20/20** across 5 categories | **PARTIAL** | 4/4 each on: memory recall, capability selection, path resolution, security decision, document generation. Deterministic graders, no human-in-the-loop. PARTIAL: recorded internally; the grader self-test (14/14) and the harness are inspectable and re-runnable, but this specific 20/20 run is not bundled in the public pack. |
-| Aggregate health smoke-test | 17–19 of 19 checks | **PARTIAL** | A one-command health check across subsystems; snapshots range 17/19 to 19/19. PARTIAL: internal; the **honest spread is shown** rather than the best single number. |
+| Quality-evaluation harness | **original 5 categories at 100%**; full expanded suite clears its **≥70% gate at ~79%** | **PARTIAL** | The original five categories — memory recall, capability selection, path resolution, security decision, document generation — each pass at 100%; the suite has since GROWN (added framing/discipline categories), and on that larger suite it clears its ≥70% gate at ~79% with the failures concentrated in the newer, harder categories (a few of which are missing-grader / timeout harness gaps rather than content misses). Deterministic graders, no human-in-the-loop. PARTIAL: recorded internally; the harness is inspectable and re-runnable on a clean checkout. The older "20/20" is the smaller, earlier 5-category suite — not comparable apples-to-apples. |
+| Aggregate health smoke-test | **26/28** checks on the current expanded suite | **PARTIAL** | A one-command health check across subsystems. The suite GREW from a 19-check baseline to 28 (later hardening checks added); on the current 28-check suite it passes 26 (the 3 known failures are an expected-count lag and hardcoded-path lint items, all pre-existing drift). The older "17–19/19" is a strict subset of the 28. PARTIAL: internal; the honest larger denominator is shown rather than the flattering subset. |
 | Mechanical safety hooks present + parsing + running | 8/8 hook scripts | **PARTIAL** | A self-audit reported all 8 enforcement hooks present, parsing, and executing — with one "firing-but-blind" hook found and fixed in the same pass (an honest self-catch, not concealed). PARTIAL: internal self-audit. |
 
 ### 4.1 The public claim register — a metric of disclosure discipline
@@ -122,17 +122,39 @@ The 4 VERIFIED claims — file-based memory survives a restart; the human-approv
 
 ---
 
-## 5. Product-boundary interview scores
+## 5. The public reproducibility harness — the strongest freshly-publishable proof
 
-The platform runs an adversarial "interrogate-the-persona-before-it-ships" check: an independent interrogator agent probes a product persona across four boundary classes and scores each probe pass/fail. The interview record is the proof artifact. (Source: `metrics.md` §5; `_DIGEST.md` §3.5.)
+The single most checkable artifact in this whole pack is **not** an internal log: it is a
+**public, stdlib-only, network-free verification harness shipped in the open repository**
+(`scripts/verify_all.py` in the published Apache-2.0 shell). Any reviewer can clone the repo
+and run it on a fresh checkout with no API keys; it exits `0` only when **all eight** of the
+public claims it checks pass.
 
-| Metric | Value | Label | Notes |
-|---|---|---|---|
-| Probes generated for one product persona (a trading-coach persona) | **15 probes** | **PARTIAL** | Distribution: 5 boundary-refusal (will it refuse one-way actions?) + 4 grounding (will it invent a number it cannot know?) + 3 leak-resistance + 3 self-honesty. PARTIAL: a self-test result recorded internally; the protocol generator and scorer are inspectable, the specific run is not bundled publicly. |
-| Synthetic transcript scored | 3 probes → **2 pass / 1 fail**, planted leak correctly flagged | **PARTIAL** | The scorer caught a planted leak (exit non-zero), demonstrating the gate bites. Same provenance caveat. |
-| Separate human-led adversarial interview of the live product | refusal held on attack attempts; **one over-claim was broken by the interviewer and conceded/corrected by the system** | **PARTIAL** | The most credible data point in this section: under a second, less-correlated interviewer the system's own claim was challenged and it **conceded and corrected rather than doubling down**. PARTIAL: transcript is internal (and contains a real name that must be redacted). |
+| Check | What it verifies | Result |
+|---|---|---|
+| V001 | At maximum autonomy (L5) a high-risk action still **queues** (the hard gate) | PASS |
+| V002 | An invalid autonomy score **fails closed** to queue | PASS |
+| V003 | The fast-verify queue records **append-only** pending + decision events | PASS |
+| V004 | BYOM reports **honestly** when no model config is present (no fabricated reply) | PASS |
+| V005 | Metric-gated retention **KEEP/REVERT** self-test passes (byte-exact revert) | PASS |
+| V006 | The action runner is **allow-listed** (unknown action refused, nothing executed) | PASS |
+| V007 | Selected HTTP API routes return **HTTP 200 JSON** | PASS |
+| V008 | Secret config patterns are **gitignored** | PASS |
 
-> **Honesty limit carried from the source.** A boundary "pass" means "held its boundaries on the probes asked," NOT "is safe." Leak-detection scoring is **literal-term matching, not paraphrase-aware** — a determined paraphrase could evade it. (Source: `metrics.md` §5; `_DIGEST.md` §3.5.)
+**Result: PASS (8/8), exit 0** — re-run 2026-06-03 on a clean checkout. (Source: the
+published `scripts/verify_all.py` + its `verification/last-run.json` report.) — **VERIFIED
+(executed on the public repo; reproducible by any reviewer).**
+
+This is the proof an outside reviewer should run first, because it converts the audit's spine
+— *the gate still queues a high-risk action at maximum autonomy, the runner is allow-listed,
+retention reverts byte-exact, memory degrades honestly* — from an inspection claim into an
+**executed** one, against published code, with no AI judgment in the loop. It is the
+reproducibility artifact this metrics chapter leans on, in place of any internal run.
+
+> **Honest scope.** Eight checks are not a full safety certification — they are the public
+> claims that can be checked on a fresh clone without API keys. A PASS means *these eight
+> properties hold on the published code*, not "the system is safe" in the absolute. The
+> deeper acceptance tallies (§4) and the roadmap capabilities remain labelled as in §1–§4.
 
 ---
 
@@ -232,9 +254,9 @@ To keep the multipliers honest, it is worth stating plainly where the strongest 
 | Cost-to-serve | **~$26,920** API-equivalent | NOT cash (subscription); rate-dependent; ~93% is cheap cache-read; the older "~$10K" is stale. |
 | Capability modules | 165 (7 core) | Self-asserted, reconciler-guarded count; inventory ≠ all-validated. |
 | Build iterations | up to ~260 indexed | Internal log; upper-bound index, not all reproducible from the public pack. |
-| Acceptance tests | 14/14 sites · 20/20 eval · 8/8 hooks | Mechanisms inspectable; specific runs largely internal. |
+| Acceptance tests | 14/14 sites · eval original-5 100% / full-suite ~79% gate-cleared · 26/28 smoke · 8/8 hooks | Mechanisms inspectable; specific runs largely internal. |
 | Public claim register | **4 VERIFIED / 8 PARTIAL / 0 UNVERIFIED** | The 4 VERIFIED were actually run; the 8 are honestly down-labelled. |
-| Product-boundary interview | 15 probes; gate bites on planted leak | "Pass" = boundaries held on the probes asked, not "safe"; literal-term scoring. |
+| Public reproducibility harness | **8/8 PASS** (`verify_all.py`, exit 0) | Stdlib-only, network-free, runnable on a fresh clone with no keys; eight public claims, not a full safety certification. |
 | Small-model fine-tune | **−20pp → +13.3pp** (still sub-threshold) | A capability-in-progress; the scaled projection is UNVERIFIED. |
 | Caching saving | ~42% off a cached turn (up to ~90% input-only) | Scoped: whole-turn vs input-only; break-even at ~2+ hits. |
 | Multi-agent premium | ~15× tokens | Caching ~halves the fan-out but it is still ~14× a single cached turn. |
@@ -247,13 +269,13 @@ To keep the multipliers honest, it is worth stating plainly where the strongest 
 
 1. **The token/cost ledger is the most solid evidence** — machine-generated, internally consistent, two-snapshot history. Trust the **counts** as VERIFIED; treat the **dollar figure** as a configurable cost-to-serve (not cash), and quote the **current ~$26.9K**, not the stale ~$10K. (Source: `metrics.md` §8.1.)
 
-2. **The acceptance-test tallies (14/14, 20/20, 8/8) are real and the mechanisms are inspectable**, but most specific runs live in internal logs. For full external reproducibility, the bundled tests must be run on a clean checkout. (Source: `metrics.md` §8.2.)
+2. **The acceptance-test tallies (14/14 sites; eval original-five at 100% / full-suite ~79% gate-cleared; 26/28 smoke; 8/8 hooks) are real and the mechanisms are inspectable**, but most specific runs live in internal logs. For full external reproducibility, the bundled tests must be run on a clean checkout — and the eight public gate/queue/retention/runner properties are *already* executable today via `scripts/verify_all.py` (§5). (Source: `metrics.md` §8.2.)
 
 3. **The fine-tune track is honest about being unfinished.** Do not let −20pp → +13.3pp be read as a shipped capability, and never quote the ~5,900-pair projection on its own. (Source: `metrics.md` §8.3.)
 
 4. **Every multiplier depreciates or is scoped.** Caching saves the input bill but not output; the ~15× fan-out premium is not cancelled by caching; the ~3× routing advantage erodes as inference prices fall ~50×/yr; concurrency saturates near ~8–10 workers. None of these is a permanent defensibility, and the audit does not present any of them as one. (Source: `scalability.md` §5.)
 
-5. **The disclosure discipline itself is a positive signal.** A claim register that reads 4/8/0 with the 4 actually run, a smoke-test reported as a 17–19/19 *spread* rather than the best number, a "firing-but-blind" hook surfaced rather than hidden, and a −20pp regression left in the record — these are the marks of materials that down-label themselves rather than over-claim. For an independent auditor, that is worth more than any single multiplier. (Source: `metrics.md` §8.4; `_DIGEST.md` §3.4.)
+5. **The disclosure discipline itself is a positive signal.** A claim register that reads 4/8/0 with the 4 actually run, a smoke-test reported against its real larger denominator (26/28) rather than the flattering older subset, a "firing-but-blind" hook surfaced rather than hidden, and a −20pp regression left in the record — these are the marks of materials that down-label themselves rather than over-claim. That is worth more than any single multiplier. (Source: `metrics.md` §8.4; `_DIGEST.md` §3.4.)
 
 6. **Weight the asymmetry.** This throughput is a solo operator with AI assistance over ~19 recorded days, not a funded team. That makes the volume notable and the un-finished edges expected. Competitor maturity (large star counts, shipped paid go-to-market, open-model production lines) is a roadmap to learn from — the platform's gap is **distribution and third-party trust proof, not engineering.** (Source: `metrics.md` §8.5; `_DIGEST.md` §8.1–§8.2.)
 

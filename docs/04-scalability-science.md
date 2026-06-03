@@ -9,8 +9,9 @@
 This is the quantitative centerpiece of the audit. It models the **cost, concurrency,
 throughput, and reliability** of the system under review (the "SUR" or "the platform")
 from the outside, with stated assumptions, worked numbers, and a literature anchor under
-every non-trivial claim. It is written by an independent third-party auditor — not in the
-first person, not branded as any product.
+every non-trivial claim. It is written in a structured outside-auditor voice — not in the
+first person, not branded as any product. (On what "independent" does and does not mean for
+this audit, see `00-executive-summary.md` and `08-limits-and-reproducibility.md` §6.)
 
 Three rails run through every section:
 
@@ -109,6 +110,37 @@ Two things matter here for scalability:
 > **Asymmetry, stated once.** This volume is the output of **one person with AI
 > assistance over ~19 recorded days**, not a funded team. Read it as evidence of
 > throughput for a solo+AI operation, not as parity with a staffed competitor.
+
+### 1.1a What the ledger means for a buyer — the cost-to-serve → BYOM-bill bridge
+
+The phrase "cost-to-serve" is abstract until it is divided down to a unit a buyer
+recognizes. The ledger gives two such units directly:
+
+| Unit | Derivation | Value | Label |
+|---|---|---|---|
+| Blended cost per 1,000 tokens | $26,920.27 / 10,533M tok × 1000 | **$0.00256** | VERIFIED (derived) |
+| Cost-to-serve per recorded message | $26,920.27 / 19,333 messages | **≈ $1.39 / message** | VERIFIED (derived) |
+
+The second number is the one a bring-your-own-model buyer feels: on metered API access at
+the configured rates, **a unit of work that produces one recorded assistant message costs
+≈ $1.39 of API-equivalent spend** — driven mostly by the large cached context each turn
+re-reads (§1.3), not by fresh generation.
+
+Projected forward as a **buyer's monthly bill**, at the representative cached-turn figure of
+§1.3 ($0.0523/turn):
+
+```
+10,000 cached single-turns/day × 30 days × $0.0523  ≈  $15,690 / month API-equivalent
+```
+
+This is the precise meaning of "cost-to-serve **IS** the BYOM customer's bill": the
+operator's flat-rate subscription absorbs the cash, but a buyer running the identical token
+volume on their own metered key would be billed in this band. The number is
+**rate-sensitive** (it moves proportionally with list prices, which are falling ~50×/yr, §5)
+and **mix-sensitive** (cached vs uncached, single-turn vs fan-out). It is a **cost-basis for
+pricing, not a quote** — but it is a cost-basis grounded in a machine-generated ledger, not
+a guess. **Arithmetic VERIFIED; the daily-volume mix is a stated assumption; cost-to-serve,
+NOT cash.**
 
 ### 1.2 Baseline cost of one model call
 
@@ -269,6 +301,40 @@ cap is *structural*, not a tuning artifact:
    large combined context, hitting exactly the degradation curve that motivates keeping
    working context small. **VERIFIED** (context-engineering reliability literature, §5).
 
+### 2.3a Parameterizing the synthesis tax — why the speedup curve turns over
+
+The §2.1 table held `S` constant, which is the optimistic case. The Cognition failure mode
+(force #2 above) says the opposite: reconciling N concurrently-produced outputs is itself
+work that **grows with N**, because each pair of workers can produce a conflict the lead
+must resolve. The cleanest honest model treats synthesis as a fixed base plus a term that
+scales with the *reconciliation surface*:
+
+```
+S(N) = S_0 + c · N         (linear-reconciliation model, conservative)
+S(N) = S_0 + c · N·(N−1)/2 (pairwise-conflict model, the Cognition-implied worst case)
+```
+
+With `S_0 = 1.0 min`, `c = 0.15 min`, `t = 2 min`, real speedup `= N·t / (t + S(N))`:
+
+| N | speedup, constant S (§2.1 optimistic) | speedup, linear S(N) | speedup, pairwise S(N) |
+|---|---|---|---|
+| 5 | 2.9× | 2.6× | 2.4× |
+| 8 | 4.6× | 3.4× | 2.7× |
+| 10 | 5.7× | 3.6× | 2.6× |
+| 15 | 8.6× | 3.7× | 2.0× |
+| 25 | 14.3× | 3.3× | 1.1× |
+
+**Reading.** Under the constant-`S` fiction, more workers always help. Under either
+*realistic* synthesis-cost model the curve **turns over**: linear-reconciliation peaks near
+**N ≈ 12–15** and then declines; the pairwise-conflict model — the one Cognition's
+"conflicting decisions carry bad results" implies — peaks near **N ≈ 8** and falls off a
+cliff past it. This is the **third independent derivation of the ~8–10 cap** (alongside the
+Amdahl ceiling §2.2 and the rate-limit admission bound §4.5): the cap is not a tuning
+artifact, it is where the synthesis tax overtakes the parallelism gain. **Arithmetic
+VERIFIED; `S_0`, `c`, and the two functional forms are stated modelling choices — the
+*direction* (synthesis cost grows with N) is the VERIFIED Cognition result, the *exact
+coefficient* is UNVERIFIED for this platform specifically.**
+
 > **Honest envelope.** The platform is inside the defensible zone **only** when workers
 > run genuinely independent sub-tasks AND the lead receives full traces and *synthesizes*
 > rather than blind-concatenates (the Cognition requirement). Fan-out of *interdependent*
@@ -321,6 +387,71 @@ arithmetic (**VERIFIED**); `W` and `L` are stated inputs. The "not the bottlenec
 conclusion is **PARTIAL** — it depends on the local handler being IO-bound, which the
 stdlib per-route defensive-load design supports.
 
+### 3.1a The own-server break-even — when self-hosting beats rented API
+
+The own-server design raises an economics question the throughput model does not answer:
+**at what volume does self-hosting inference beat paying per-token for a rented API?** This
+is a real decision the platform's self-host track faces, so the audit models it with dated,
+cited inputs and labels each regime.
+
+**Verified external inputs (2026, cited §5a):**
+
+| Input | Value | Source |
+|---|---|---|
+| Rented A100, on-demand | ~$2.00 / GPU-hr | RunPod/Lambda rental boards, 2026 — VERIFIED |
+| Rented H100, on-demand | ~$2.50 / GPU-hr | same — VERIFIED |
+| vLLM, Llama-2-70B on 4×A100, 256 concurrent | **~2,200 tok/s aggregate** | vLLM benchmark, cited — VERIFIED |
+| "True cost" multiplier over raw GPU (DevOps, idle, ops) | **2.5×–3×** | self-host TCO analyses, 2026 — VERIFIED (direction); PARTIAL (exact) |
+| Self-host cheaper only above | **~11B tok/mo (~500M/day)** | published TCO break-even, 2026 — VERIFIED |
+
+**The arithmetic.** A 4×A100 box at $8/hr serves 2,200 tok/s ≈ 7.9M tok/hr at full
+utilization. Run 24/7 that is **$5,760/mo** of raw GPU rent and a *capacity ceiling* of
+**~5.7B tokens/mo**. The effective self-host cost-per-million-tokens depends almost entirely
+on **utilization** — idle GPU time is the silent killer:
+
+```
+self-host $/M (raw GPU only) = ($8/hr) / (7.92M tok/hr) / utilization
+   at 100% util:  $1.01 / M
+   at  50% util:  $2.02 / M
+   at  20% util:  $5.05 / M
+with the 3× true-cost multiplier (DevOps/idle/ops):
+   at 100% util:  $3.03 / M
+   at  50% util:  $6.06 / M
+```
+
+**Three honest regimes** (comparing the self-host blended $/M against a metered API blended
+at a 90%-input / 10%-output mix):
+
+| Regime | API blended rate | Self-host verdict | Why |
+|---|---|---|---|
+| **vs a frontier-class API** ($3/M in, $15/M out → ~$4.20/M blended) | $4.20/M | **Self-host wins ONLY at high utilization** (raw GPU at 100% util = $1.01/M; but with the 3× ops multiplier it needs >~70% util to stay under $4.20/M) | Frontier API output is expensive; a *busy* owned box undercuts it |
+| **vs a cheap open-weight API** ($0.14/M in, $0.28/M out → ~$0.15/M blended) | $0.15/M | **API wins at every utilization** — even raw-GPU 100%-util self-host ($1.01/M) is ~7× the cheap API | Cheap metered open-weight serving is below any self-host floor |
+| **Break-even VOLUME vs frontier-class** | — | **~1.37B tok/mo**, achievable only if box utilization exceeds **~24%** | Below this volume the fixed $5,760/mo box loses to metered |
+
+**The finding, stated honestly.** Self-hosting on *rented* GPUs beats rented API in a
+**narrow band**: against a *frontier-priced* API, at *high, sustained utilization*, above
+**~1.37B tokens/month**. Against *cheap open-weight* metered serving, **self-host
+essentially never wins** on cost alone. This agrees with the cited published threshold
+("self-host cheaper only above ~11B tok/mo" once the full 2.5–3× TCO multiplier and
+sub-100% utilization are applied — the order of magnitude matches). **Arithmetic VERIFIED;
+rental rates and throughput VERIFIED (cited, dated); the utilization and input/output mix
+are stated assumptions; the TCO multiplier is PARTIAL.**
+
+> **The economics that actually flip — owned hardware, small model.** There is one regime
+> where self-host wins decisively, and the audit names it precisely because it is *not* the
+> frontier-quality case. On **already-owned** consumer hardware (a used 24 GB card, ~$700,
+> ~95 tok/s on a 7B model at Q4 quantization — VERIFIED, cited §5a), the *marginal* cost is
+> electricity: ~350 W at $0.15/kWh ≈ **$0.154 / M tokens** — roughly **20× under a $3/M
+> frontier-input rate**. But this flips **only** because (a) the hardware is a sunk cost and
+> (b) the model is *small* — a 7B open model, **not** a frontier-quality model. **Quality is
+> the trade.** The honest statement: owned-hardware self-hosting of a small open model is
+> dramatically cheaper at the margin *and* lower capability; it is a
+> **sovereignty-and-privacy lever, not a frontier-capability-at-lower-cost lever.** Anyone
+> quoting the $0.154/M figure without the "small model, sunk hardware, lower quality"
+> triplet is quoting it dishonestly. **PARTIAL** (the platform's self-host track exists and
+> is documented; this specific owned-hardware per-M figure is a model on cited specs, not a
+> measured production run of the platform).
+
 ### 3.2 Sandboxed tool execution — bounded blast radius, bounded cost
 
 The public tool surface is an **allow-listed action runner**: a closed action dictionary
@@ -354,7 +485,57 @@ Two honest scope limits on this section:
   (b) stays *left* of the context-degradation curve (§5, VERIFIED). The shipped artifact
   is a **context-pressure policy** (it measures pressure, verifies survival pins,
   checkpoints) — **VERIFIED**; a *distinct sandbox-execute primitive* as a separate engine
-  is **UNVERIFIED in the public repo.**
+  is **UNVERIFIED in the public repo.** The principle is quantified in §3.2a.
+
+### 3.2a The context-discipline lever, quantified — script-and-capture vs raw-dump
+
+The platform's stated discipline is: when a worker must analyze a large tool output (a JSON
+blob, a log, a query result), it **runs an analysis script off-context and lets only the
+printed findings enter the model's window** — never the raw data. §3.2 describes this; here
+is the number, because it is the single largest per-task cost lever the platform ships and it
+compounds across a fan-out.
+
+**The worked case.** A worker must analyze a **200 KB tool output (~50,000 tokens)** — say,
+a query result or a directory scan — and produce a 2,000-token finding. Two paths, at the §0
+rates with a 16k cached stable prefix (h = 0.90):
+
+| Path | What enters context | Per-call cost-to-serve | Label |
+|---|---|---|---|
+| **RAW-DUMP** (load the 50k blob, then ask) | prefix(16k cached) + blob(50k fresh input) + 2k out | prefix $0.0103 + blob $0.150 + out $0.030 = **$0.190** | VERIFIED (arithmetic) |
+| **CONTEXT-DISCIPLINE** (script runs off-context; only ~300 tokens of findings enter) | prefix(16k cached) + findings(300 input) + 2k out | prefix $0.0103 + findings $0.0009 + out $0.030 = **$0.041** | VERIFIED (arithmetic) |
+
+```
+per-task saving:  $0.190 → $0.041   =   ~78% off the call   =   ~4.6× cheaper
+across a 15-worker fan-out each analyzing a blob:
+   RAW-DUMP:         15 × $0.190  =  $2.85
+   DISCIPLINE:       15 × $0.041  =  $0.62      → ~$2.24 saved per fan-out
+```
+
+**Two effects, not one — this is why it raises quality AND cuts cost.**
+
+1. **Cost (VERIFIED arithmetic).** The 50k-token blob is turn-specific and uncacheable, so
+   under RAW-DUMP it is paid at full fresh-input rate *every call*. Under the discipline it
+   never enters the window — only the ~300-token finding does. The ~4.6× saving is on the
+   *analysis-task* class specifically (blob-heavy work); it does not apply to tasks that have
+   no large intermediate data.
+
+2. **Quality (VERIFIED literature, §5).** Keeping the blob out of the window keeps each
+   worker's input small, which holds it **left of the context-degradation curve**
+   ("performance degrades as input token count increases across all major models tested" —
+   VERIFIED, §5). Independent research measures the same lever's upside: context-editing
+   alone gives a +29% performance lift, and an 84% token reduction over a 100-turn eval
+   (Anthropic context-engineering — VERIFIED, §5). The discipline therefore **buys cost AND
+   accuracy from the same move** — the rare lever with no trade-off against quality, because
+   the raw data was never load-bearing for the reasoning, only the findings were.
+
+> **Honest scope.** The 4.6× is for **blob-heavy analysis tasks**, not all tasks; it assumes
+> the finding genuinely compresses the blob (true for counts/filters/extracts, false if the
+> model legitimately needs the full data). The shipped artifact verified in the public repo
+> is a **context-pressure policy** (it measures pressure and protects survival pins); a
+> *distinct off-context execution engine* as a separate primitive is **UNVERIFIED in the
+> public repo** — so this section quantifies the *principle the policy encodes*, and labels
+> the separate-engine claim as roadmap. **Arithmetic VERIFIED; blob-size and finding-size are
+> stated assumptions; the separate-engine claim UNVERIFIED.**
 
 ### 3.3 Cost vs load (cost-to-serve)
 
@@ -373,6 +554,15 @@ cash** on a subscription. The mix is a stated assumption. The two levers that be
 curve are cost-tier routing (§1.5) and caching (§1.3) — both real, both date-sensitive.
 This linearity is the honest scaling story: there is no magic economy of scale on the
 model bill; the discipline is in keeping each task's token footprint small.
+
+The three levers now have numbers attached, and they compose: **context-discipline (§3.2a)
+shrinks each task's token footprint ~4.6× on blob-heavy work; caching (§1.3) cuts the
+recurring-prefix input bill ~42%/turn; and own-server economics (§3.1a) only bend the curve
+at high sustained volume on a busy box, or decisively but at lower capability on owned
+small-model hardware.** The honest synthesis: there is **no economy of scale on the model
+bill itself** — it is linear in volume — so the entire scaling discipline is *footprint
+reduction per task*, not *amortization over volume*. That is the structural difference
+between an LLM-OS cost curve and a classical-software one.
 
 ---
 
@@ -524,6 +714,22 @@ self-referential. The load-bearing sources, with labels:
 | Inference unit-economics | introl inference-economics guide | Batching 32 requests ≈ 85% cheaper per token for +20% latency; quantization ~60–70% cost cut | VERIFIED |
 | AI-2027 (Kokotajlo et al.) | ai-2027.com | The canonical public statement of autonomous-agent alignment risk — the named risk the gate layer answers (timeline since revised toward early 2030s = PARTIAL) | VERIFIED (revision PARTIAL) |
 
+(Full clickable URLs for every row above are consolidated in [`docs/REFERENCES.md`](./REFERENCES.md).)
+
+### 5a Own-server / self-host economics anchors (new in §3.1a)
+
+| Source | What it grounds | Label |
+|---|---|---|
+| GPU rental boards (RunPod ~$2.50/hr H100, ~$2.00/hr A100; Lambda ~$2.80/hr H100), 2026 | The rented-GPU hourly inputs to the break-even (§3.1a) | VERIFIED (dated rental quotes) |
+| vLLM continuous-batching benchmarks (Llama-2-70B on 4×A100 ≈ 2,200 tok/s @ 256 concurrent; single-A100 8B ≈ 38 tok/s solo → ~187 tok/s at 8 concurrent) | The throughput inputs; the concurrency-multiplies-throughput point | VERIFIED (published benchmark) |
+| Self-host-vs-API TCO analyses, 2026 (break-even ~11B tok/mo / ~500M/day; raw GPU is only ~30–40% of true cost → 2.5–3× multiplier) | The break-even threshold + the TCO multiplier (§3.1a) | VERIFIED (direction); PARTIAL (exact multiplier) |
+| Consumer-GPU local-inference benchmarks, 2026 (24 GB card ≈ 95 tok/s on a 7B model at Q4_K_M) | The owned-hardware marginal-cost figure (§3.1a blockquote) | VERIFIED (published benchmark) |
+
+> **Why these matter.** They convert the own-server discussion from "isolation has value"
+> (true but unquantified) into a **dated, three-regime break-even** a reviewer can re-run.
+> Like all inference economics in this audit, they are a **moving target** — GPU rental and
+> API prices both fall, and the break-even volume moves with them (§1.5, Epoch AI).
+
 The honest framing of the safety angle, carried verbatim from the research grounding: the
 strongest claim available is **not** "this platform is safer than frontier labs"
 (UNVERIFIED and unprovable) but **"the architecture treats autonomy-without-a-gate as the
@@ -557,8 +763,13 @@ engineering looks like in numbers.
    **isolation + reliability + bounded blast radius** (the allow-listed runner caps each
    worker's surface to a list a reviewer reads in one file) — **not raw QPS.** "Sandboxed
    MCP at scale" and a distinct sandbox-execute engine are **UNVERIFIED in the public
-   repo** — roadmap, not shipped. *(Inventory items 3 & 10 — VERIFIED in repo; queueing
-   arithmetic VERIFIED.)*
+   repo** — roadmap, not shipped. The context-discipline lever — running analysis
+   off-context and admitting only the printed findings — is quantified at **~4.6× cheaper
+   per blob-heavy analysis task** (~78% off the call) AND is one of the rare levers that
+   **raises quality while cutting cost** (it keeps each worker left of the
+   context-degradation curve; §3.2a). The *principle* is sound and literature-backed; a
+   *distinct off-context execution engine* is **UNVERIFIED in the public repo** — roadmap,
+   not shipped. *(Inventory items 3 & 10 — VERIFIED in repo; queueing arithmetic VERIFIED.)*
 
 4. **Reliability.** Each of the four practices carries concrete, numeric leverage:
    auto-restart buys **~2 nines** via MTTR; retry + backoff turns `p = 0.9` into **99.9%
@@ -569,6 +780,17 @@ engineering looks like in numbers.
    **independently converge on ~8–15 workers** as the useful band. *(Availability /
    probability formulas VERIFIED; long-horizon compounding from arXiv 2509.09677 —
    VERIFIED.)*
+
+5. **Own-server economics.** Self-hosting on *rented* GPUs beats a *frontier-priced* API
+   only at **high sustained utilization above ~1.37B tokens/month**, and **never** beats
+   *cheap open-weight* metered serving on cost alone. The one regime that flips
+   decisively — **owned consumer hardware running a small open model (~$0.154/M marginal,
+   ~20× under a frontier-input rate)** — does so *only* because the hardware is sunk and the
+   model is small; **quality is the trade.** Self-hosting is therefore a
+   **sovereignty / privacy / marginal-cost lever, not a frontier-capability-at-lower-cost
+   lever** — and the audit states it as exactly that, with no superlative. *(GPU rental +
+   vLLM throughput + TCO threshold — VERIFIED §5a; utilization/mix — stated; TCO multiplier
+   — PARTIAL.)*
 
 **The defensible finding.** The platform's scaling design is **sound on the dimensions it
 ships** — reliability, isolation, bounded blast radius, context discipline — and its

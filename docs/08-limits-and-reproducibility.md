@@ -49,7 +49,7 @@ The audited public repo is **Apache-2.0**: a React front end over a **pure-stdli
 
 | # | Capability | Label | Source |
 |---|---|---|---|
-| C1 | BYOM model router (OpenAI-compatible `/chat/completions`; one ~250-line stdlib file + config; one disclosed system line, no hidden prompt). | **VERIFIED** | _DIGEST.md §2 row 1 |
+| C1 | BYOM model router (OpenAI-compatible `/chat/completions`; one small ~216-line stdlib file + config; one disclosed system line, no hidden prompt). | **VERIFIED** | _DIGEST.md §2 row 1 |
 | C2 | Context-pressure policy (measures pressure, verifies survival pins, checkpoints). | **VERIFIED** | _DIGEST.md §2 row 2 |
 | C3 | A **distinct** context-discipline sandbox-execute primitive. | **UNVERIFIED in repo** | _DIGEST.md §2 row 2, §8 |
 | C4 | Allow-listed action runner (closed `ACTIONS` dict; unknown name returns the allowed list, executes nothing; not a raw shell). | **VERIFIED** | _DIGEST.md §2 row 3 |
@@ -77,11 +77,11 @@ The audited public repo is **Apache-2.0**: a React front end over a **pure-stdli
 | M5 | 165 capability modules (7 architectural-core). | **PARTIAL** (self-asserted, reconciler-guarded; not enumerated on disk this pass) | metrics.md §2 |
 | M6 | Up to ~260 indexed build-and-verify iterations. | **PARTIAL** (internal log; upper-bound index) | metrics.md §3 |
 | M7 | 14/14 multi-site generation acceptance (spec valid + 4/4 pages + working contact form + export-cleanliness scan + live HTTP 200). | **PARTIAL** (internal log; mechanism inspectable) | metrics.md §4 |
-| M8 | 20/20 quality-evaluation harness across 5 categories, deterministic graders. | **PARTIAL** (internal run; harness re-runnable) | metrics.md §4 |
-| M9 | 17–19 of 19 aggregate health smoke-test (honest spread shown). | **PARTIAL** | metrics.md §4 |
+| M8 | Quality-evaluation harness: the original five categories pass at 100%; the full expanded suite clears its ≥70% gate at ~79% (failures concentrated in newer framing/discipline categories, not the original five). | **PARTIAL** (internal run; harness re-runnable) | metrics.md §4 |
+| M9 | 26/28 aggregate health smoke-test on the current expanded suite (the older "19/19" denominator is a strict subset; honest denominator + failing checks shown). | **PARTIAL** | metrics.md §4 |
 | M10 | 8/8 mechanical safety hooks present + parsing + running — with one "firing-but-blind" hook found and fixed in the same pass. | **PARTIAL** (internal self-audit) | metrics.md §4 |
 | M11 | 12 tracked product claims: **4 VERIFIED / 8 PARTIAL / 0 UNVERIFIED** — the 4 VERIFIED were the ones actually run on the collection date. | **VERIFIED** (read from the register) | metrics.md §4; gpt-competitors.md §1.2 |
-| M12 | Product-boundary interview: 15 probes; synthetic transcript 2 pass / 1 fail with the planted leak correctly flagged (gate bites). | **PARTIAL** | metrics.md §5 |
+| M12 | Public reproducibility harness (`verify_all.py`): 8/8 PASS, exit 0 — stdlib-only, network-free, runnable on a fresh clone with no keys; verifies the gate hard-floor, fail-closed scoring, append-only queue, honest BYOM no-config, retention KEEP/REVERT, allow-listed runner, HTTP-200 routes, gitignored secrets. | **VERIFIED** (executed on the public repo) | scripts/verify_all.py; metrics.md §5 |
 | M13 | Small-model fine-tune: 50 pairs → ≈ −20pp (regression, FAIL); ~150 pairs → +13.3pp (first positive, below the +15pp bar). | **PARTIAL** | metrics.md §6 |
 | M14 | Fine-tune projection at ~5,900 pairs → predicted to clear the bar. | **UNVERIFIED** (not yet run) | metrics.md §6 |
 
@@ -94,12 +94,11 @@ The audited public repo is **Apache-2.0**: a React front end over a **pure-stdli
 | X3 | OpenClaw scale ~247K stars (2026-03-02 snapshot), reported ~355K by mid-2026; Hermes ~175K stars in <4 months; ECC 205,179 stars / 31,492 forks (2026-06-03 live API). | **VERIFIED** snapshots; "most-starred / beat React" framing **PARTIAL** (date-dependent) | openclaw.md; ecc.md; gpt-competitors.md §2 |
 | X4 | ECC / SUR / OpenClaw all share the same solo or near-solo bus-factor; the real contrast is governance maturity (ECC ships Sponsors, a $19/seat/mo paid tier, ~1,000-test CI, an 80% coverage gate). | **VERIFIED** | ecc.md |
 | X5 | There is **no on-record GPT (or external-AI) critique or endorsement** of the SUR; GPT/OpenAI appear only as a request-shape compatibility target and an optional backend; the external-model connector is a mock-driven shell with **no successful real call logged** ($0.00, zero tokens). | **VERIFIED** | gpt-competitors.md Part 1 |
-| X6 | The one captured external-model review used a less-correlated reviewer that broke a blessed claim; the SUR persona **conceded and corrected** rather than doubling down. | **PARTIAL** | gpt-competitors.md Part 1; metrics.md §5 |
-| S1 | The SUR implements the named, public LLM-as-OS / "Software 3.0" paradigm (Karpathy) — it does not invent one. | **VERIFIED** | researchers.md |
-| S2 | Multi-agent FOR: Anthropic's orchestrator-worker system outperformed single-agent by 90.2% on its internal eval at ~15× the tokens, token usage explaining ~80% of performance variance. | **VERIFIED** | researchers.md |
-| S3 | Multi-agent AGAINST (steel-man): Cognition's "Don't Build Multi-Agents" — dispersed decisions across agents that don't share full context compound conflicting errors. The SUR is defensible **only insofar as it shares full traces + synthesizes** — an implementation property the audit must keep examining. | **VERIFIED** (the science); SUR's trace-sharing property is **PARTIAL** | researchers.md; _DIGEST.md §8 item 7 |
+| S1 | The SUR implements the named, public LLM-as-OS / "Software 3.0" paradigm (Karpathy) — it does not invent one. | **VERIFIED** | researchers.md; [Karpathy](https://www.ycombinator.com/library/MW-andrej-karpathy-software-is-changing-again) |
+| S2 | Multi-agent FOR: Anthropic's orchestrator-worker system outperformed single-agent by 90.2% on its internal eval at ~15× the tokens, token usage explaining ~80% of performance variance. | **VERIFIED** | researchers.md; [Anthropic](https://www.anthropic.com/engineering/multi-agent-research-system) |
+| S3 | Multi-agent AGAINST (steel-man): Cognition's "Don't Build Multi-Agents" — dispersed decisions across agents that don't share full context compound conflicting errors. The SUR is defensible **only insofar as it shares full traces + synthesizes** — an implementation property the audit must keep examining. | **VERIFIED** (the science); SUR's trace-sharing property is **PARTIAL** | researchers.md; [Cognition](https://cognition.ai/blog/dont-build-multi-agents); _DIGEST.md §8 item 7 |
 | S4 | Context engineering: context editing alone = +29% lift; with a memory tool = +39%; in a 100-turn eval context editing cut tokens 84%. Degradation is universal across all major models. | **VERIFIED** | researchers.md |
-| S5 | Long-horizon reliability: per-step error rate rises as a task progresses and compounds; reliability is domain-stratified — the empirical backbone for the gate + per-step-verification argument. | **VERIFIED** (a ~12-hour-horizon figure is PARTIAL) | researchers.md |
+| S5 | Long-horizon reliability: per-step error rate rises as a task progresses and compounds; reliability is domain-stratified — the empirical backbone for the gate + per-step-verification argument. | **VERIFIED** (a ~12-hour-horizon figure is PARTIAL) | researchers.md; [arXiv 2509.09677](https://arxiv.org/abs/2509.09677) |
 | S6 | Inference economics: prompt caching cuts cost up to ~90% / latency up to ~85% on long stable prefixes; inference prices fall ~50×/yr (median, Epoch AI) — so the cheap-vs-frontier routing gap is a **depreciating** asset. | **VERIFIED** | researchers.md |
 
 ### 1.5 Scalability math (all `$` = API-equivalent at stated rates)
@@ -136,10 +135,10 @@ A PARTIAL label is not a dead end; it is a claim with a specified next step. Thi
 | **M5** 165 modules | PARTIAL | Enumerate the manifest files on a clean checkout (one directory-count command). The count becomes VERIFIED; note that count ≠ validation (see §4.2). |
 | **M6** ~260 iterations | PARTIAL | Publish the iteration index with per-entry self-test outcomes so each can be re-read. Until then it stays an upper-bound index, not a per-entry guarantee. |
 | **M7** 14/14 sites | PARTIAL | Run the bundled deterministic acceptance generator on a clean checkout. The **mechanism is already inspectable**; a clean-room re-run moves the *result* to VERIFIED. |
-| **M8** 20/20 eval | PARTIAL | Re-run the bundled quality-evaluation harness (deterministic graders, no human-in-the-loop). The harness and its grader self-test are inspectable; a fresh run moves the run to VERIFIED. |
-| **M9** 17–19/19 smoke | PARTIAL | Run the one-command health check on a clean checkout and report the snapshot; honest spread already disclosed. |
+| **M8** eval (original-5 100% / full ~79%) | PARTIAL | Re-run the bundled quality-evaluation harness (deterministic graders, no human-in-the-loop). The harness and its grader self-test are inspectable; a fresh run moves the run to VERIFIED. Report the suite version with the score — the older "20/20" is the smaller 5-category suite. |
+| **M9** 26/28 smoke | PARTIAL | Run the one-command health check on a clean checkout and report the snapshot against its real (28-check) denominator. |
 | **M10** 8/8 hooks | PARTIAL | Re-run the hook self-audit on a clean checkout; the "firing-but-blind" fix is the kind of self-catch a re-run confirms. |
-| **M12** interview probes | PARTIAL | Bundle the protocol generator + scorer with a fixture transcript so a reviewer reproduces the "gate bites on a planted leak" result. Note the standing limit: leak scoring is literal-term, not paraphrase-aware (see §4.1). |
+| **M12** reproducibility harness | VERIFIED | Already runnable: clone the repo and run `scripts/verify_all.py` on a fresh checkout (stdlib-only, no keys); expect `PASS (8/8)`, exit 0. This is the audit's strongest freshly-publishable proof and needs no further unlock. |
 | **M13** fine-tune deltas | PARTIAL | Publish the training data, eval split, and run logs so the −20pp and +13.3pp deltas are independently reproducible against the open ~0.5B base. |
 | **M14** ~5,900-pair projection | **UNVERIFIED** | **Run the experiment.** This is the only honest way to move it — it is currently a projection, not a measured result, and must never be quoted as if it were one. |
 | **C3 / C5 / C7 / C13** roadmap capabilities | UNVERIFIED in repo | Ship them in the public repo (or a separately auditable component) with the same inspectable shape as the verified capabilities. Until then they are roadmap claims, not shipped facts. |
@@ -148,7 +147,7 @@ A PARTIAL label is not a dead end; it is a claim with a specified next step. Thi
 | **K7** aggregate consumption regression | PARTIAL | Add a single bundled regression run that executes all per-item consumption smoke-tests together, so "the consumed patterns stay healthy" is one re-runnable command. |
 | **S3** SUR shares full traces | PARTIAL | Demonstrate, on the public shell, that multi-agent work shares full traces and synthesizes (rather than blind-concatenating) — the property that, per Cognition's steel-man, separates a defensible multi-agent design from a failure-prone one. (Bound by C7: the concurrent execution engine is not in the public repo.) |
 | **X2** sandbox-escape defense percentages | PARTIAL | Cite the specific academic paper(s) and quote their exact reported intervals; the *events* and the *direction* are VERIFIED, the exact single-paper percentages are not yet pinned. |
-| **X6** concede-and-correct datapoint | PARTIAL | Publish a redacted transcript of the external-model review (a real name must be removed first) so the concede-and-correct behaviour is independently readable. |
+| **Citations** (S-rows, X-rows) | VERIFIED with internal pointer | Follow the public URL now surfaced in [`docs/REFERENCES.md`](./REFERENCES.md); each external claim is checkable against its primary (Karpathy talk, Anthropic/Cognition posts, METR/Epoch/arXiv). No internal-pointer-only citation remains for an external claim. |
 
 > **The pattern across every unlock path:** almost all of them are a **clean-checkout re-run** or a **publish-the-artifact** step — not new engineering. The exception is **M14**, which genuinely requires running an experiment that has not been run. That distribution is itself a finding: the gap between PARTIAL and VERIFIED here is mostly *packaging and disclosure*, not capability.
 
@@ -160,8 +159,15 @@ A PARTIAL label is not a dead end; it is a claim with a specified next step. Thi
 
 These require nothing beyond the public Apache-2.0 repo and public registry/API data. A reviewer can confirm them today.
 
-- **Inspect the shipped shell directly.** The BYOM router (~250-line stdlib file + config, one disclosed system line), the allow-listed action runner (closed `ACTIONS` dict; unknown name → returns the allowed list, executes nothing), the file-based memory (declared-files-only, never globs), the audit surface + token meter, and the local stdlib server (same-origin, every route degrades to a clean "unavailable" at HTTP 200) are all **present and readable in the repo**. (_DIGEST.md §2)
-- **Verify the gate model bites.** The autonomy dial (L0–L5) × risk score (4–20) routing, and the property that **even at L5 a high-risk action still queues** to the append-only `gate-queue.jsonl`, are inspectable in the published code. (_DIGEST.md §2 row 5)
+- **Inspect the shipped shell directly.** The BYOM router (~216-line stdlib file + config, one disclosed system line), the allow-listed action runner (closed `ACTIONS` dict; unknown name → returns the allowed list, executes nothing), the file-based memory (declared-files-only, never globs), the audit surface + token meter, and the local stdlib server (same-origin, every route degrades to a clean "unavailable" at HTTP 200) are all **present and readable in the repo**. (_DIGEST.md §2)
+- **Run the public reproducibility harness.** The published shell ships a stdlib-only,
+  network-free `scripts/verify_all.py`; a reviewer clones the repo and runs it on a fresh
+  checkout with no API keys to get `PASS (8/8)`, exit 0 — verifying the gate hard-floor,
+  fail-closed scoring, the append-only queue, honest BYOM no-config, retention KEEP/REVERT,
+  the allow-listed runner, HTTP-200 routes, and gitignored secrets. This is the audit's
+  strongest **executed** proof against published code, with no AI judgment in the loop.
+  (scripts/verify_all.py; metrics.md §5)
+- **Verify the gate model bites.** The autonomy dial (L0–L5) × risk score (4–20) routing, and the property that **even at L5 a high-risk action still queues** to the append-only `gate-queue.jsonl`, are inspectable in the published code — and executed directly by `verify_all.py` checks V001/V002. (_DIGEST.md §2 row 5)
 - **Read the safety hooks.** The allow-list + hard gate + byte-exact revert loop, and the contributor rule forbidding their weakening, are in the repo. (_DIGEST.md §2 row 6)
 - **Re-read the public claim register.** The 4 VERIFIED / 8 PARTIAL / 0 UNVERIFIED tally is read directly from the pack's own register and verdict. (metrics.md §4)
 - **Re-derive the blended cost rate.** $26,920.27 ÷ 10,533M tokens ≈ $0.00256 / 1,000 tokens is division of two figures present in the ledger. The **token counts are VERIFIED**; only the rate behind the dollar figure needs a current-pricing check. (metrics.md §1, §1b)
@@ -173,8 +179,7 @@ These require nothing beyond the public Apache-2.0 repo and public registry/API 
 
 The *mechanisms* are inspectable; the specific *results* live in internal logs. A reviewer with a clean checkout can re-produce these, but they cannot be confirmed from the bundled materials alone:
 
-- The **14/14** site-generation acceptance run, the **20/20** quality-eval run, the **17–19/19** smoke-test snapshot, and the **8/8** hook self-audit. (Run the bundled tests on a fresh checkout — metrics.md §4, §8 item 2.)
-- The **product-boundary interview** result (15 probes; gate bites on a planted leak). (Bundle + run the generator and scorer — metrics.md §5.)
+- The **14/14** site-generation acceptance run, the quality-eval suite (original-five categories at 100% / full-suite ~79% gate-cleared), the **26/28** smoke-test snapshot, and the **8/8** hook self-audit. (Run the bundled tests on a fresh checkout — metrics.md §4, §8 item 2.) *(Note: the eight public gate/queue/retention/runner properties from this set are already executable today via `scripts/verify_all.py` — §3.1.)*
 - The **per-item consumption smoke-tests** as a single aggregate regression. (Add one bundled regression command — consumption.md §7.)
 
 ### 3.3 Not reproducible from public materials at all (yet)
@@ -185,7 +190,7 @@ These require access not granted, an artifact not published, or an experiment no
 - The **fine-tune deltas** (−20pp, +13.3pp) until the training data + eval split + run logs are published; and the **~5,900-pair projection (M14)**, which has **not been run** and cannot be confirmed by any amount of re-reading. (metrics.md §6)
 - A **successful real external-model (e.g. GPT) call** — the connector is a mock-driven shell with no successful live call logged; until a live call is captured, the cross-provider path is interface-only. (gpt-competitors.md Part 1)
 - The four **roadmap capabilities (C3/C5/C7/C13)** — not in the public repo, so not reproducible as shipped behaviour. (_DIGEST.md §8)
-- A **token-level clean-room diff (K5)** and the **redacted external-review transcript (X6)** — owed artifacts, not yet published.
+- A **token-level clean-room diff (K5)** — an owed artifact, not yet published.
 
 > **The reproducibility verdict.** The *architecture and the gate/audit/memory/consumption disciplines* are reproducible **now**. The *performance and acceptance tallies* are reproducible **with a clean checkout**. The *fine-tune wins, the autonomous multi-agent execution, and the live cross-provider call* are **not yet reproducible** — and the audit labels them accordingly. An honest buyer's checklist: trust the shell as readable today; require a clean-checkout test run before trusting the tallies; treat the fine-tune and roadmap items as in-progress.
 
@@ -207,7 +212,13 @@ The credibility signal *is* the −20pp and the sub-threshold +13.3pp left in th
 
 This sits inside the broader, independently-grounded reality that small-model maturity is hard everywhere: long-horizon per-step error compounds (S5), and the model layer is the part of the stack the platform most clearly does **not** lead. The sovereignty / run-your-own-model path is validated as a *direction* by peers who ship open weights (Nous/Hermes), but that is roadmap context, not a present SUR capability. (researchers.md; gpt-competitors.md §2.1, §2.3)
 
-A second, narrower limit in the same family: the **product-boundary interview** scores boundary-refusal by **literal-term matching, not paraphrase-aware** detection, and a "pass" means "held its boundaries on the probes asked," **not** "is safe" (metrics.md §5). The gate demonstrably bites on a planted leak; it is not a safety certification.
+A second, narrower limit in the same family: the public reproducibility harness
+(`scripts/verify_all.py`, 8/8 PASS — §5 / M12) is the audit's strongest **executed** proof,
+but a PASS means *those eight public properties hold on the published code*, **not** "the
+system is safe" in the absolute. It checks the gate hard-floor, fail-closed scoring, the
+append-only queue, honest BYOM no-config, retention KEEP/REVERT, the allow-listed runner,
+HTTP-200 routes, and gitignored secrets — it is a verifiable floor, not a safety
+certification.
 
 ### 4.2 The solo-builder asymmetry — throughput is notable, edges are expected
 
@@ -225,7 +236,7 @@ The clearest place the platform is **behind** is not the code; it is distributio
 
 - **Reach / ecosystem.** Incumbents sit at **175K–355K stars** with large skill marketplaces (OpenClaw ~247K–355K; Hermes ~175K; ECC 205,179) (openclaw.md; ecc.md; gpt-competitors.md §2). The SUR has no comparable public footprint.
 - **Shipped paid go-to-market.** ECC already ships a **$19/seat/mo** tier, GitHub Sponsors, a ~1,000-test CI suite, and an 80% coverage gate (ecc.md). The SUR's commercialization is not yet a shipped, externally-purchasable product.
-- **Third-party trust proof.** There is **no on-record external-AI critique or endorsement** of the SUR, and **no successful live external-model call** is logged (gpt-competitors.md Part 1). The single load-bearing external datapoint is behavioural, not a benchmark: under a less-correlated reviewer the persona **conceded and corrected** a claim rather than doubling down — credible, but a single data point (metrics.md §5).
+- **Third-party trust proof.** There is **no on-record external-AI critique or endorsement** of the SUR, and **no successful live external-model call** is logged (gpt-competitors.md Part 1). What the SUR *does* offer a third party today is the **public reproducibility harness** (`scripts/verify_all.py`, 8/8 PASS, exit 0): anyone can clone the open repo and execute the gate/queue/retention/runner properties for themselves, with no AI judgment and no keys (§5 / M12). That is verifiable, but it is self-published code a reviewer runs — not an independent third-party endorsement, which the SUR does not have.
 - **Open-model-production line.** The platform has no shipped open-weight model; peers in the category do (gpt-competitors.md §2.3).
 
 The honest conclusion the source research converges on: **the gap is distribution and third-party trust-proof, not engineering** (_DIGEST.md §8 item 2). The remedy is reach, independent verification, and a shipped paid offering — exactly the unlock paths in §2 (publish artifacts, enable clean-checkout reruns) plus a go-to-market motion the competitor landscape already demonstrates is achievable.
@@ -242,7 +253,162 @@ Pulling the labels together gives a precise, defensible verdict — and nothing 
 - **The unfinished parts are labelled, not hidden:** four roadmap capabilities not in the repo (C3/C5/C7/C13), a fine-tune track that is genuinely in-progress (M13/M14), and a go-to-market gap that is real (§4.3). The single UNVERIFIED-and-unrunnable item is the fine-tune projection (M14) — and it is flagged as such.
 - **Most of the distance between PARTIAL and VERIFIED is disclosure, not engineering** (§2). That is the most actionable conclusion in this chapter: the credibility of this audit can be materially raised by clean-checkout reruns and published artifacts, with one genuine experiment (M14) outstanding.
 
-No part of this audit asserts that the platform "beats frontier," is "fully sovereign," or approaches "AGI." None of those is claimed in any source, and the labels above are the reason a reader can trust that restraint: where the evidence was not run, it is marked — by the platform's own materials first, and by this audit second. That self-down-labelling is, for an independent auditor, the single most reassuring property in the entire body of evidence.
+No part of this audit asserts that the platform "beats frontier," is "fully sovereign," or approaches "AGI." None of those is claimed in any source, and the labels above are the reason a reader can trust that restraint: where the evidence was not run, it is marked — by the platform's own materials first, and by this audit second. That self-down-labelling is the single most reassuring property in the entire body of evidence.
+
+---
+
+## 6. Strongest counterarguments — pre-empted, not hidden
+
+This section exists because a hostile reader should encounter the strongest objections
+*with* their honest responses, not discover them independently and conclude the audit was
+hiding them. Each attack below is mounted at full force; the response is given only where one
+genuinely exists. Where a point requires a concession, it is conceded.
+
+---
+
+### 6.1 "Consume-not-harness is just rebranding"
+
+**The attack:** The SUR uses the same open `SKILL.md` format as its competitors, took
+patterns from the same ecosystem tools they build on, and re-implemented those patterns in
+its own language — which every derivative tool also does. The word "consume" is a narrative
+choice, not an observable engineering distinction.
+
+**Honest response (partial concession):** The attack correctly identifies that "consume"
+carries more implication than the evidence directly supports. The falsifiable claim behind
+the terminology is narrower: the SUR's **running code carries no imported dependency on any
+consumed reference source.** That is a real property — it means no supply-chain coupling, no
+GPL contamination risk, no runtime reliance on a vendor's release cadence — and it is
+structurally verifiable (different implementation language, segregated reference
+directories, no import linkage; consumption.md §3). The narrative framing is defensively
+weak. The engineering property is real.
+
+**Concession:** "Consume" as a differentiating brand should be read as shorthand for that
+specific falsifiable property, not as a claim of broader architectural distinctiveness at
+the harness level, which the audit explicitly concedes is commodity.
+
+---
+
+### 6.2 "The defensibility is overstated"
+
+**The attack:** Every described architectural component — the HITL gate, the retention loop,
+the allow-listed action runner — is simple enough that a team reading this audit could
+reproduce any of them in a day. The audit describes how to copy the SUR's differentiators
+while claiming those differentiators are defensible.
+
+**Honest response (qualified concession):** The attack is correct that no individual
+component is a permanent, copy-proof advantage, and this audit explicitly does not claim
+otherwise. The honest claim throughout is a **current-state structural advantage**, not a
+permanent one: the VERIFIED shipped capabilities constitute an advantage specifically over
+the documented failure modes of the most-adopted category incumbents (CVE-2026-25253, the
+~1.5M-token breach, the "shadow superuser" demonstration — openclaw.md;
+gpt-competitors.md §2). A team that reads this audit and then builds the equivalent of
+`autonomy.py` and `verify_queue.py` would be closing the exact gap the CVE record
+evidences — and the existence of that gap today, among the most-adopted tools, is what the
+current-state claim rests on.
+
+**Concession:** The docs use "current-state structural advantage" rather than any
+permanent-advantage framing throughout; informal reads of the word "defensible" should be
+understood in the bounded sense above. The four UNVERIFIED roadmap capabilities
+(C3/C5/C7/C13) contribute nothing to this claim and should not be read as if they do.
+
+---
+
+### 6.3 "The metrics are cherry-picked"
+
+**The attack:** The strongest acceptance tallies are PARTIAL because the specific runs are
+internal. The only independently verifiable quantitative figures are the token counts
+(machine-generated) and the fine-tune deltas — and the fine-tune deltas show a regression
+(−20pp) and a sub-threshold result (+13.3pp). The headline numbers are internal; the
+verifiable numbers are the failures.
+
+**Honest response:** The distribution of labels in the metrics chapter is not
+cherry-picking — it is the evidence structure. The −20pp regression, the corrected
+eval/smoke figures, the stale-vs-current cost correction, and the 8 PARTIAL claims are all
+present and labeled. A cherry-picked metrics chapter would quote only the clean tallies and
+omit the regression; this audit calls the −20pp "the credibility signal" (metrics.md §6).
+
+**Presentation fix applied:** The Executive Summary (doc 00) now carries the PARTIAL labels
+co-located with every quoted acceptance tally ("14/14 (PARTIAL — internal log)", the eval
+shown as original-five 100% / full-suite ~79% gate-cleared, "26/28 (PARTIAL)") rather than
+quoting them bare. The labels that lived downstream in doc 07 are now carried upstream to
+where the figures first appear.
+
+---
+
+### 6.4 "Single-operator means this is not real engineering"
+
+**The attack:** No CI, no peer review, no coverage gate, no external test suite, no paying
+customers, no third-party security audit. Four capabilities unshipped. A fine-tune track with
+a net regression. A smoke test that fails some checks. This is a prototype, not a production
+engineering artifact.
+
+**Honest response:** Every item in that list is already stated in this audit at the
+locations cross-referenced throughout; no part of it is hidden. The accurate framing of the
+asymmetry: **this is engineering at prototype/MVP scale with verification debt outstanding**,
+not "not real engineering." The stdlib-only Python server, the inspectable gate logic, the
+byte-exact retention loop — these are verifiable engineering artifacts with provably correct
+properties independent of team size. "Even at L5 a high-risk action still queues" is either
+true or false and is checkable by reading the gate function in `autonomy.py`. Team size does
+not change that property.
+
+**The gap is specific and documented:** ECC ships ~1,000 tests, an 80% coverage gate, and a
+$19/seat/mo paid tier (ecc.md). The SUR does not. That gap is distribution and verification
+infrastructure, not a category gap in engineering correctness on the shipped components.
+Both can be true simultaneously.
+
+**Unlock:** Publish the bundled tests; enable clean-checkout reruns. Most of the distance
+from "prototype" to "verified" is disclosure, not new engineering (§2 of this document).
+
+---
+
+### 6.5 "An audit written with the subject's own AI is not independent"
+
+**The attack:** The primary build tool (Claude Opus 4.8) also authored this audit. The same
+model that built the SUR evaluated it. The multi-model cross-check is three other AI models,
+not independent humans. "Independent" in any professional audit sense requires no prior
+involvement, no stake, and human accountability — none of which applies here. This is
+structurally a self-review.
+
+**Concession (significant):** This attack is **substantially correct on the terminology.**
+The audit does not use "independent" in the professional-audit sense. The README abstract and
+the executive-summary header have been changed to "structured technical audit built with AI
+assistance, applying a labeled-evidence standard (VERIFIED / PARTIAL / UNVERIFIED) to
+primary sources," and a methodology note states the AI-authorship limitation up front.
+
+**What survives the attack:** The VERIFIED claims in this audit rest on **publicly readable
+code and public registry data**, not on the AI's assessment of its own work. A reviewer who
+has never seen Claude can read `autonomy.py`, `verify_queue.py`, `retention.py`, and the
+public OpenClaw CVE advisories, and confirm every section-A VERIFIED claim
+([`09-claims-register.md`](./09-claims-register.md) §A) without trusting a single AI
+judgment. That is the honest meaning of "independently verifiable" here — the evidence is
+public-source, not AI-attested. The AI's role was to read the public sources and structure
+the labeling; the labels themselves can be re-derived by any reviewer from the same sources.
+
+**The multi-model cross-check** is not a substitute for human peer review. It is a
+de-correlation mechanism that catches within-family blind spots — useful, but it does not
+constitute an independent human audit. What the audit offers a reviewer *instead* of an
+internal cross-check record is the **public reproducibility harness** (`scripts/verify_all.py`,
+8/8 PASS, exit 0): the load-bearing safety properties are executable on the published code
+by anyone, with no model judgment in the loop (§5 / M12).
+
+**The honest bounded claim:** This is a structured, labeled, multi-model-cross-checked
+review of a shipped codebase, where the evidence for VERIFIED claims is independently
+readable public code. It is not a Big Four audit, a NIST assessment, or an ISO
+certification. It is more transparent — with labeled evidence grades, explicit
+down-labeling, and a stated reproducibility boundary — than most product documentation in
+this category. It is not, and does not claim to be, professionally independent.
+
+---
+
+### 6.6 Summary verdict table
+
+| Attack | Concession required? | Where it is handled |
+|--------|----------------------|---------------------|
+| "Consume-not-harness is rebranding" | PARTIAL — tighten terminology | §6.1 above; consumption.md §3, §5 |
+| "Defensibility is overstated" | YES — "current-state structural advantage", not a permanent copy-proof advantage | §6.2 above; doc 00 "A note on 'defensibility'" |
+| "Metrics are cherry-picked" | NO on substance; YES on presentation | §6.3 above; doc 00 PARTIAL labels co-located |
+| "Single-operator = not real engineering" | YES on scale; NO on category | §6.4 above; §4.2 of this document |
+| "Audit written with own AI is not independent" | YES — language concession | §6.5 above; README + doc 00 header + methodology note |
 
 ---
 

@@ -18,7 +18,9 @@ A terminology note carried throughout: the SUR's relationship to the open-source
 
 The SUR is a **local-first AI operating-system shell**: a React front end over a small, dependency-free Python server that turns one or more operator-supplied language models into a controllable, gated agent workforce. The intelligence is brought by the operator — **bring-your-own-model (BYOM)** — and the SUR supplies the operating surface around it: a chat channel, an agent grid, an org chart, an approval queue, per-agent autonomy dials, and health / context / token panels. It runs on `127.0.0.1:8911`; the UI and the JSON API are served same-origin, so there is no CORS layer. (**VERIFIED** — `README.md`, `docs/ARCHITECTURE.md`, public overview.) (capabilities.md "What the SUR is")
 
-The frame it implements is a **named, public paradigm** — the LLM-as-operating-system / "Software 3.0" idea articulated by Andrej Karpathy. The SUR does not claim to invent the paradigm; it implements one. Any defensibility therefore has to come from execution and discipline, not from architectural novelty — a point the audit returns to throughout. (**VERIFIED** — researchers.md; _DIGEST.md §5)
+The frame it implements is a **named, public paradigm** — the LLM-as-operating-system / "Software 3.0" idea articulated by Andrej Karpathy ([talk, Y Combinator AI Startup School, 2025](https://www.ycombinator.com/library/MW-andrej-karpathy-software-is-changing-again); [video](https://www.youtube.com/watch?v=LCEmiRjPEtQ)). The SUR does not claim to invent the paradigm; it implements one. Any defensibility therefore has to come from execution and discipline, not from architectural novelty — a point the audit returns to throughout. (**VERIFIED** — primary source above; see also [References](./REFERENCES.md))
+
+The mapping is component-for-component, and stating it plainly is part of grading the SUR honestly. In Karpathy's analogy the **model is the compute core**; in the SUR that core is *swappable and operator-supplied* (the BYOM router, §3). The **context window is the working memory**; the SUR treats it as managed RAM with an explicit pressure policy and checkpoints (`context_policy.py`, §3). **Tools, files, and APIs are the resources the OS coordinates**; the SUR exposes them only through an allow-listed action runner rather than a raw shell (§3). Karpathy frames the present as the **1960s-mainframe, time-shared era** — compute centralized and reached through thin "terminals" (chat); the SUR's same-origin `127.0.0.1` shell is exactly such a terminal over an operator-owned compute back end. What the analogy does **not** supply — and what the SUR adds as its own engineering — is the **human-in-the-loop gate layer** (§5): an OS schedules and isolates processes, but it does not, by default, withhold an irreversible action pending human approval. That gate is the SUR's addition on top of the borrowed paradigm, and it is where the audit looks for defensibility (docs 04, 05, 08).
 
 ---
 
@@ -44,7 +46,7 @@ The spine is a set of small, single-responsibility stdlib modules, each fronted 
 
 | Component | Responsibility | Backing module(s) | Representative routes | Status |
 |---|---|---|---|---|
-| **BYOM model router** | Speak the OpenAI-compatible request shape to any operator-chosen provider or local server | `chat_byom.py` (~250 lines) | `/chat/completions` shape | **VERIFIED** |
+| **BYOM model router** | Speak the OpenAI-compatible request shape to any operator-chosen provider or local server | `chat_byom.py` (~216 lines) | `/chat/completions` shape | **VERIFIED** |
 | **Context-pressure policy** | Treat the context window as managed RAM; measure pressure, verify survival pins, checkpoint | `context_policy.py` (~31 KB) | `/api/context`, `/api/context-checkpoint` | **VERIFIED** (policy); distinct sandbox-execute primitive **UNVERIFIED in repo** |
 | **Allow-listed action runner** | Invoke only named, vetted tools — never a raw shell | `servari_server.py` (`ACTIONS` dict) | `/api/run?action=...` | **VERIFIED**; general MCP layer **UNVERIFIED in repo** |
 | **Workforce surface** | Present and coordinate many agents (grid, org chart, channels, briefs) | `servari_server.py` handlers | `/api/agents`, `/api/agent-channel`, `/api/org`, `/api/grid`, `/api/launch` | surface **VERIFIED**; concurrent execution engine **not in repo** |
@@ -169,7 +171,7 @@ The architecturally-relevant consequence: the components in §3 are an **owned c
 A reader can hold the whole system in mind as four concentric concerns:
 
 1. **The operator's model** sits outside the SUR entirely (BYOM) — the SUR never owns or hides the intelligence.
-2. **The BYOM router** is the single, ~250-line doorway between the operator's model and the shell, carrying one disclosed system line and nothing hidden.
+2. **The BYOM router** is the single, small (~216-line) doorway between the operator's model and the shell, carrying one disclosed system line and nothing hidden.
 3. **The control plane** — the allow-listed action runner, the autonomy × risk gate with its hard floor, the mechanical hooks — surrounds every action so the blast radius of an over-eager agent is bounded by a hand-curated list and a queue that cannot be auto-crossed.
 4. **The record plane** — file-based memory, the curated non-glob memory surface, the append-only gate and retention audits, the read-only token meter, the fail-closed health surface — makes everything the SUR did inspectable after the fact.
 

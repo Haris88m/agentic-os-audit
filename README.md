@@ -1,4 +1,4 @@
-# An Independent Technical Audit of a Production Agentic Operating System
+# A Structured Technical Audit of a Production Agentic Operating System — Built With AI Assistance, Labeled-Evidence Standard
 
 **Author / researcher:** Haris Mekic
 **Build assistance:** Claude Opus 4.8 (lead author and engineer), with Claude Sonnet, OpenAI GPT, and Google Gemini used for cross-checks
@@ -9,7 +9,9 @@
 
 ## Abstract
 
-This repository documents an independent technical audit of a production agentic operating system — referred to throughout as **the system under review (SUR)**, or **the platform**. The SUR is a single-operator, skills-based agentic platform built on top of commodity large-language-model coding harnesses (the same open-source category as OpenClaw, Hermes, and Pi.dev), but distinguished by an architecture that *consumes* open-source engineering one-way into its own design rather than shipping a harness. The audit examines the platform's structure, its operational disciplines, its human-in-the-loop gate layer, its failure-pattern regression memory, its parallel multi-agent orchestration, and its competitive defensibility. The aim is an honest, third-party engineering assessment: what is real, what is partial, and what is unverified.
+This repository documents a structured technical audit of a production agentic operating system — referred to throughout as **the system under review (SUR)**, or **the platform** — applying a labeled-evidence standard (**VERIFIED / PARTIAL / UNVERIFIED**) to primary sources and to publicly readable code. The SUR is a single-operator, skills-based agentic platform built on top of commodity large-language-model coding harnesses (the same open-source category as OpenClaw, Hermes, and Pi.dev), but distinguished by an architecture that *consumes* open-source engineering one-way into its own design rather than shipping a harness. The audit examines the platform's structure, its operational disciplines, its human-in-the-loop gate layer, its failure-pattern regression memory, its parallel multi-agent orchestration, and its competitive defensibility. The aim is an honest, outside-in engineering assessment: what is real, what is partial, and what is unverified.
+
+*Methodology note: this audit was built by the same AI model (Claude Opus 4.8) that built the platform under review, with Sonnet, GPT, and Gemini for cross-checks. Evidence labeled VERIFIED rests on publicly readable code and public registry data that any reviewer can confirm independently; it does not rest on the AI's self-assessment. Evidence labeled PARTIAL or UNVERIFIED is explicitly bounded to that status. This is not a professionally-independent auditor engagement; it is a structured, labeled, multi-model technical review. See [doc 06](./docs/06-methodology.md) for the full methodology and [doc 08 §6](./docs/08-limits-and-reproducibility.md) for the direct rebuttal to the "an audit written with the subject's own AI is not independent" objection.*
 
 The platform was built by one person with AI assistance — not a funded team — and that asymmetry is weighted honestly throughout. Where the SUR is compared against well-resourced commercial agentic systems, those systems' maturity is treated as a roadmap to learn from, not a deficit to spin against. Every non-trivial claim in the audit documents is explicitly labeled **VERIFIED**, **PARTIAL**, or **UNVERIFIED**. Cost and token figures, where they appear, are **API-equivalent cost-to-serve** — the platform runs largely on a subscription, so these are not cash outlays, and the documents say so at each point. No claim of "beating frontier models," "full sovereignty," or "AGI" appears anywhere in this audit, by design.
 
@@ -28,6 +30,8 @@ The platform was built by one person with AI assistance — not a funded team �
 | 06 | [Methodology — Built With Claude](./docs/06-methodology.md) | How the platform was engineered with Claude Opus 4.8 and other models, and the discipline applied to AI-written code |
 | 07 | [Metrics](./docs/07-metrics.md) | The honest metrics tables, with VERIFIED / PARTIAL / UNVERIFIED labels and the API-equivalent cost caveat |
 | 08 | [Limits, Honesty Ledger & Reproducibility](./docs/08-limits-and-reproducibility.md) | What is unverified, what is single-operator-dependent, and what an outside reviewer can reproduce |
+| 09 | [Claims & Evidence Register](./docs/09-claims-register.md) | Every load-bearing claim with a VERIFIED / PARTIAL / UNVERIFIED grade and a concrete reproduction step |
+| — | [References](./docs/REFERENCES.md) | Consolidated external literature with verified URLs (Karpathy LLM-OS, AI-2027, Anthropic & Cognition on multi-agent, METR, Epoch AI, OpenClaw, Hermes/Nous, the open SKILL.md standard) |
 
 A consolidated PDF of the full audit is published under [`pdf/`](./pdf/).
 
@@ -35,7 +39,7 @@ A consolidated PDF of the full audit is published under [`pdf/`](./pdf/).
 
 ## Honesty & Method
 
-This audit is written from the stance of an **independent third-party technical auditor** examining the system from the outside. It is not first-person, and it is not branded as any product. Auditor integrity is the deliverable: the documents disclose **outcomes** (what the platform does and how well), and **withhold the proprietary build-method by design** — the specific iterative process used to produce the platform is the operator's competitive defensibility and is treated as out of scope for disclosure, not as a gap in the audit.
+This audit is written from the stance of a **structured technical auditor** examining the system from the outside, applying a labeled-evidence standard. It is not first-person, and it is not branded as any product. It is honest about its own construction: the same AI model that built the platform also authored the audit (see the methodology note in the abstract above and [doc 06](./docs/06-methodology.md)), so "independent" is reserved for the *evidence standard* — the VERIFIED claims rest on publicly readable code and public registry data, not on the AI's assessment of its own work — not for the auditor's relationship to the subject. Auditor integrity is the deliverable: the documents disclose **outcomes** (what the platform does and how well), and **withhold the proprietary build-method by design** — the specific iterative process used to produce the platform is the operator's competitive defensibility and is treated as out of scope for disclosure, not as a gap in the audit.
 
 A terminology note that is load-bearing throughout: the platform **consumes** open source. It consumes patterns one-way into its own architecture and runs them on its own terms. It is *not* a harness and it does not "harness" anything — the word "harness" appears in these documents only to describe the generic tools the platform is contrasted against. That contrast *is* the central engineering distinction the audit examines: other tools ship a harness; this one consumes.
 
