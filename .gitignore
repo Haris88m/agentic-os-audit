@@ -1,0 +1,13 @@
+# internal research source notes — NOT part of the published audit
+_research/
+
+# pdf intermediates — keep the final PDF, drop the working HTML/tmp
+pdf/audit.html
+pdf/*.tmp
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
