@@ -1,0 +1,29 @@
+{
+  "label": "MEASURED - live walk of the operator's substrate; counts only",
+  "measured_at": "2026-06-11T15:00:01Z",
+  "capability_modules_skills": 165,
+  "build_verify_iterations_cascade_entries": 247,
+  "highest_iteration_id": 277,
+  "failure_vaccinations": 91,
+  "learning_records": 390,
+  "finding_reports": 119,
+  "consumed_vendor_packages": 14,
+  "session_logs": 13,
+  "memory_files": 441,
+  "named_agents": 17,
+  "token_ledger": {
+    "window": "19 recorded build days ending 2026-06-03",
+    "total_tokens": 10533087004,
+    "total_tokens_billions": 10.533,
+    "input_tokens": 15784495,
+    "output_tokens": 55583873,
+    "cache_write_tokens": 396640751,
+    "cache_read_tokens": 10065077885,
+    "cache_read_share_pct": 95.6,
+    "messages": 19333,
+    "transcript_files": 556,
+    "distinct_sessions": 508,
+    "api_equivalent_cost_usd": 26920.27,
+    "note": "API-equivalent cost-to-serve at configured list rates; NOT cash (subscription)."
+  }
+}

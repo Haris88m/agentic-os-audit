@@ -8,7 +8,7 @@ An assessment is worth exactly as much as its limits section. These are carried 
 
 - It **is** a professional engineering assessment of an architecture and design stance, with a reproducible numeric study, authored by Claude (Anthropic) under the architect's direction.
 - It is **not** an independent third-party audit: the assessing AI also built much of the implementation under the architect's gated workflow. The mitigation is the evidence standard, not the relationship — every load-bearing claim is labeled, VERIFIED claims rest on public artifacts and re-runnable code, and the simulation suite re-executes on any machine. Readers should weight PARTIAL and SIMULATED claims accordingly.
-- The **private build-method is withheld by documented decision.** The architecture is fully described at pattern level (docs 01–02); the specific iterative process that produced the implementation is the operator's competitive property. This is a disclosed boundary, not a hidden one.
+- The **private build-method is withheld by documented decision** in docs 00–05, which describe the architecture at pattern level. **Dated change (2026-06-11):** the architect explicitly raised the disclosure dial — [doc 06](./06-the-real-system.md) names the real system, publishes its self-improvement loop, and carries live-measured numbers with the measurement script. What remains excluded there is basic security (credentials, live security parameters) and personal data — not strategy. This bullet is kept, dated, as the record of the boundary moving by owner decision rather than by leak.
 
 ## 2. Honest limits of the architecture (carried unchanged from the v1 research)
 
