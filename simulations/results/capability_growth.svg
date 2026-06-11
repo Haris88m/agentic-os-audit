@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="920" height="480" fill="#ffffff"/>
+<text x="70" y="28" font-size="19" font-weight="600" fill="#1f2328">Capability growth: CONSUME vs. harness-native optimization</text>
+<text x="70" y="48" font-size="13" fill="#57606a">Base scenario, 36 months. Both strategies start at 10 validated modules with identical native cadence.</text>
+<text x="70" y="466" font-size="11" fill="#8b949e">SIMULATED - illustrative dynamical model, parameters anchored to the public consumption ledger and ecosystem growth data. Apex Prime assessment, 2026-06.</text>
+<line x1="70" y1="394.0" x2="890" y2="394.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="398.0" font-size="11" fill="#57606a" text-anchor="end">0</text>
+<line x1="70" y1="326.7" x2="890" y2="326.7" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="330.7" font-size="11" fill="#57606a" text-anchor="end">50</text>
+<line x1="70" y1="259.3" x2="890" y2="259.3" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="263.3" font-size="11" fill="#57606a" text-anchor="end">100</text>
+<line x1="70" y1="192.0" x2="890" y2="192.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="196.0" font-size="11" fill="#57606a" text-anchor="end">150</text>
+<line x1="70" y1="124.7" x2="890" y2="124.7" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="128.7" font-size="11" fill="#57606a" text-anchor="end">200</text>
+<line x1="70.0" y1="64" x2="70.0" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="70.0" y="412" font-size="11" fill="#57606a" text-anchor="middle">0</text>
+<line x1="297.8" y1="64" x2="297.8" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="297.8" y="412" font-size="11" fill="#57606a" text-anchor="middle">10</text>
+<line x1="525.6" y1="64" x2="525.6" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="525.6" y="412" font-size="11" fill="#57606a" text-anchor="middle">20</text>
+<line x1="753.3" y1="64" x2="753.3" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="753.3" y="412" font-size="11" fill="#57606a" text-anchor="middle">30</text>
+<line x1="70" y1="394" x2="890" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<line x1="70" y1="64" x2="70" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<text x="480" y="434" font-size="12" fill="#1f2328" text-anchor="middle">Month</text>
+<text x="20" y="229" font-size="12" fill="#1f2328" text-anchor="middle" transform="rotate(-90 20 229)">Validated capability modules</text>
+<path d="M70.0,380.5 L92.8,378.2 L115.6,375.9 L138.3,373.6 L161.1,371.5 L183.9,369.3 L206.7,367.2 L229.4,365.2 L252.2,363.3 L275.0,361.3 L297.8,359.5 L320.6,357.6 L343.3,355.8 L366.1,354.1 L388.9,352.4 L411.7,350.7 L434.4,349.1 L457.2,347.6 L480.0,346.0 L502.8,344.5 L525.6,343.1 L548.3,341.7 L571.1,340.3 L593.9,338.9 L616.7,337.6 L639.4,336.3 L662.2,335.1 L685.0,333.9 L707.8,332.7 L730.6,331.5 L753.3,330.4 L776.1,329.3 L798.9,328.2 L821.7,327.2 L844.4,326.1 L867.2,325.1 L890.0,324.2" fill="none" stroke="#1f6feb" stroke-width="2.4"/>
+<path d="M70.0,380.5 L92.8,374.3 L115.6,367.8 L138.3,361.2 L161.1,354.3 L183.9,347.3 L206.7,340.2 L229.4,332.8 L252.2,325.2 L275.0,317.4 L297.8,309.5 L320.6,301.2 L343.3,292.8 L366.1,284.1 L388.9,275.2 L411.7,266.3 L434.4,257.4 L457.2,248.5 L480.0,239.6 L502.8,230.8 L525.6,221.9 L548.3,213.1 L571.1,204.3 L593.9,195.5 L616.7,186.7 L639.4,177.9 L662.2,169.1 L685.0,160.4 L707.8,151.7 L730.6,143.0 L753.3,134.3 L776.1,125.7 L798.9,117.0 L821.7,108.4 L844.4,99.8 L867.2,91.2 L890.0,82.7" fill="none" stroke="#d97757" stroke-width="2.4"/>
+<rect x="70" y="443" width="14" height="14" rx="3" fill="#1f6feb"/>
+<text x="90" y="455" font-size="12" fill="#1f2328">Harness-native (logistic, harness ceiling)</text>
+<rect x="422.40000000000003" y="443" width="14" height="14" rx="3" fill="#d97757"/>
+<text x="442.40000000000003" y="455" font-size="12" fill="#1f2328">CONSUME (gated ecosystem intake)</text>
+</svg>

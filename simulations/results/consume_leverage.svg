@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="920" height="480" fill="#ffffff"/>
+<text x="70" y="28" font-size="19" font-weight="600" fill="#1f2328">Owned capabilities per year at a fixed 30 eng-hour/month verification budget</text>
+<text x="70" y="48" font-size="13" fill="#57606a">Monte Carlo mean effort: build-from-scratch 44.0h vs. consume-and-own 15.0h per capability (mean leverage 3.03x).</text>
+<text x="70" y="466" font-size="11" fill="#8b949e">SIMULATED - effort bands are stated assumptions; the consumption ledger and the &gt;=3x intake gate are public. Apex Prime assessment, 2026-06.</text>
+<line x1="70" y1="394.0" x2="890" y2="394.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="398.0" font-size="11" fill="#57606a" text-anchor="end">0</text>
+<line x1="70" y1="329.1" x2="890" y2="329.1" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="333.1" font-size="11" fill="#57606a" text-anchor="end">5</text>
+<line x1="70" y1="264.3" x2="890" y2="264.3" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="268.3" font-size="11" fill="#57606a" text-anchor="end">10</text>
+<line x1="70" y1="199.4" x2="890" y2="199.4" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="203.4" font-size="11" fill="#57606a" text-anchor="end">15</text>
+<line x1="70" y1="134.6" x2="890" y2="134.6" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="138.6" font-size="11" fill="#57606a" text-anchor="end">20</text>
+<line x1="70" y1="69.7" x2="890" y2="69.7" stroke="#eaeef2" stroke-width="1"/>
+<text x="62" y="73.7" font-size="11" fill="#57606a" text-anchor="end">25</text>
+<line x1="144.5" y1="64" x2="144.5" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="144.5" y="412" font-size="11" fill="#57606a" text-anchor="middle">2</text>
+<line x1="293.6" y1="64" x2="293.6" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="293.6" y="412" font-size="11" fill="#57606a" text-anchor="middle">4</text>
+<line x1="442.7" y1="64" x2="442.7" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="442.7" y="412" font-size="11" fill="#57606a" text-anchor="middle">6</text>
+<line x1="591.8" y1="64" x2="591.8" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="591.8" y="412" font-size="11" fill="#57606a" text-anchor="middle">8</text>
+<line x1="740.9" y1="64" x2="740.9" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="740.9" y="412" font-size="11" fill="#57606a" text-anchor="middle">10</text>
+<line x1="890.0" y1="64" x2="890.0" y2="394" stroke="#f6f8fa" stroke-width="1"/>
+<text x="890.0" y="412" font-size="11" fill="#57606a" text-anchor="middle">12</text>
+<line x1="70" y1="394" x2="890" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<line x1="70" y1="64" x2="70" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<text x="480" y="434" font-size="12" fill="#1f2328" text-anchor="middle">Month</text>
+<text x="20" y="229" font-size="12" fill="#1f2328" text-anchor="middle" transform="rotate(-90 20 229)">Cumulative owned, validated capabilities</text>
+<path d="M70.0,385.2 L144.5,376.3 L219.1,367.5 L293.6,358.6 L368.2,349.8 L442.7,340.9 L517.3,332.1 L591.8,323.2 L666.4,314.4 L740.9,305.6 L815.5,296.7 L890.0,287.9" fill="none" stroke="#1f6feb" stroke-width="2.4"/>
+<path d="M70.0,368.1 L144.5,342.1 L219.1,316.2 L293.6,290.2 L368.2,264.3 L442.7,238.3 L517.3,212.4 L591.8,186.5 L666.4,160.5 L740.9,134.6 L815.5,108.6 L890.0,82.7" fill="none" stroke="#d97757" stroke-width="2.4"/>
+<rect x="70" y="443" width="14" height="14" rx="3" fill="#1f6feb"/>
+<text x="90" y="455" font-size="12" fill="#1f2328">Build-from-scratch</text>
+<rect x="249.6" y="443" width="14" height="14" rx="3" fill="#d97757"/>
+<text x="269.6" y="455" font-size="12" fill="#1f2328">CONSUME (gated consumption)</text>
+</svg>

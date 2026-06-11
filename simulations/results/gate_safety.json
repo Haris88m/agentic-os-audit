@@ -1,0 +1,95 @@
+{
+  "label": "SIMULATED (closed-form expectation on stated priors)",
+  "anchors": {
+    "reviewer_catch_rate": 0.915,
+    "source": "published category study: ~17% baseline defense; 19-92% with staged human-in-the-loop review (strongest reviewer ~91.5%)"
+  },
+  "model": {
+    "actions_per_week": 1000.0,
+    "risk_shares": {
+      "low": 0.9,
+      "med": 0.08,
+      "high": 0.02
+    },
+    "harm_priors": {
+      "low": 0.001,
+      "med": 0.05,
+      "high": 0.25
+    },
+    "dial": {
+      "L0": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "L1": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "L2": [
+        0.2,
+        0.8,
+        1.0
+      ],
+      "L3": [
+        0.05,
+        0.5,
+        1.0
+      ],
+      "L4": [
+        0.01,
+        0.2,
+        1.0
+      ],
+      "L5": [
+        0.0,
+        0.05,
+        1.0
+      ],
+      "L5-no-floor": [
+        0.0,
+        0.05,
+        0.0
+      ]
+    }
+  },
+  "results": {
+    "L0": {
+      "gated_actions_per_week": 1000.0,
+      "expected_unsafe_passthrough_per_year": 43.8
+    },
+    "L1": {
+      "gated_actions_per_week": 550.0,
+      "expected_unsafe_passthrough_per_year": 65.2
+    },
+    "L2": {
+      "gated_actions_per_week": 264.0,
+      "expected_unsafe_passthrough_per_year": 116.1
+    },
+    "L3": {
+      "gated_actions_per_week": 105.0,
+      "expected_unsafe_passthrough_per_year": 179.6
+    },
+    "L4": {
+      "gated_actions_per_week": 45.0,
+      "expected_unsafe_passthrough_per_year": 238.4
+    },
+    "L5": {
+      "gated_actions_per_week": 24.0,
+      "expected_unsafe_passthrough_per_year": 267.4
+    },
+    "L5-no-floor": {
+      "gated_actions_per_week": 4.0,
+      "expected_unsafe_passthrough_per_year": 505.3
+    }
+  },
+  "headline": {
+    "unsafe_per_year_L0": 43.8,
+    "unsafe_per_year_L5_with_floor": 267.4,
+    "unsafe_per_year_L5_no_floor": 505.3,
+    "high_risk_floor_prevents_per_year": 237.9,
+    "operator_load_L5_per_week": 24.0,
+    "operator_load_L0_per_week": 1000.0
+  }
+}

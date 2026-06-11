@@ -1,0 +1,41 @@
+{
+  "label": "SIMULATED (Monte Carlo, seeded)",
+  "seed": 20260611,
+  "trials": 10000,
+  "anchor": "CONSUME swap time anchored to the measured 2026-06-11 same-day 9-agent engine swap (verified live 9/9).",
+  "results": {
+    "coupled (14-60d migration)": {
+      "mean_lost_tasks": 3570.3,
+      "p50_lost_tasks": 653.9,
+      "p95_lost_tasks": 13435.7,
+      "mean_excess_cost_usd": 1180.01,
+      "mean_days_degraded": 30.62
+    },
+    "CONSUME engine-knob (same-day, measured)": {
+      "mean_lost_tasks": 137.1,
+      "p50_lost_tasks": 57.1,
+      "p95_lost_tasks": 536.2,
+      "mean_excess_cost_usd": 46.02,
+      "mean_days_degraded": 1.2
+    },
+    "coupled-fast (7-21d)": {
+      "mean_lost_tasks": 1534.9,
+      "p50_lost_tasks": 444.3,
+      "p95_lost_tasks": 5572.1,
+      "mean_excess_cost_usd": 514.81,
+      "mean_days_degraded": 13.28
+    },
+    "coupled-slow (30-90d)": {
+      "mean_lost_tasks": 6254.1,
+      "p50_lost_tasks": 1155.3,
+      "p95_lost_tasks": 23673.7,
+      "mean_excess_cost_usd": 2068.57,
+      "mean_days_degraded": 53.84
+    }
+  },
+  "headline": {
+    "mean_lost_tasks_ratio": 26.0,
+    "mean_days_degraded_coupled": 30.62,
+    "mean_days_degraded_knob": 1.2
+  }
+}

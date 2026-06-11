@@ -1,0 +1,33 @@
+{
+  "label": "SIMULATED (Monte Carlo, seeded)",
+  "seed": 20260611,
+  "trials": 10000,
+  "effort_bands_hours": {
+    "scratch": [
+      24.0,
+      40.0,
+      80.0
+    ],
+    "consume": [
+      6.0,
+      12.0,
+      24.0
+    ],
+    "gate_fixed": 2.0
+  },
+  "stats": {
+    "mean_leverage": 3.03,
+    "p25_leverage": 2.52,
+    "p50_leverage": 2.93,
+    "p75_leverage": 3.42,
+    "share_above_3x_gate": 0.453,
+    "mean_scratch_hours": 44.0,
+    "mean_consume_hours": 15.0
+  },
+  "projection": {
+    "budget_hours_per_month": 30.0,
+    "capabilities_12mo_scratch": 8.2,
+    "capabilities_12mo_consume": 24.0
+  },
+  "evidence_anchor": "~8 consumption families -> ~12 owned modules in the public consumption ledger; >=3x value/overhead admission gate."
+}

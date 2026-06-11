@@ -1,0 +1,5 @@
+architecture,mean_lost_tasks,p50_lost_tasks,p95_lost_tasks,mean_excess_cost_usd,mean_days_degraded
+coupled (14-60d migration),3570.3,653.9,13435.7,1180.01,30.62
+"CONSUME engine-knob (same-day, measured)",137.1,57.1,536.2,46.02,1.2
+coupled-fast (7-21d),1534.9,444.3,5572.1,514.81,13.28
+coupled-slow (30-90d),6254.1,1155.3,23673.7,2068.57,53.84

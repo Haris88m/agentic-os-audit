@@ -1,0 +1,56 @@
+{
+  "label": "SIMULATED",
+  "months": 36,
+  "scenarios": {
+    "conservative": [
+      1.5,
+      60.0,
+      400.0,
+      30.0,
+      0.02,
+      0.04,
+      2.0,
+      0.1
+    ],
+    "base": [
+      2.0,
+      80.0,
+      600.0,
+      40.0,
+      0.04,
+      0.06,
+      4.0,
+      0.2
+    ],
+    "aggressive": [
+      2.5,
+      100.0,
+      900.0,
+      50.0,
+      0.06,
+      0.08,
+      6.0,
+      0.3
+    ]
+  },
+  "summary": {
+    "conservative": {
+      "harness_native_36mo": 39.9,
+      "consume_36mo": 122.2,
+      "advantage_36mo": 3.06,
+      "month_consume_reaches_2x": 14
+    },
+    "base": {
+      "harness_native_36mo": 51.9,
+      "consume_36mo": 231.2,
+      "advantage_36mo": 4.46,
+      "month_consume_reaches_2x": 6
+    },
+    "aggressive": {
+      "harness_native_36mo": 63.8,
+      "consume_36mo": 368.6,
+      "advantage_36mo": 5.78,
+      "month_consume_reaches_2x": 4
+    }
+  }
+}

@@ -1,52 +1,75 @@
-# A Structured Technical Audit of a Production Agentic Operating System — Built With AI Assistance, Labeled-Evidence Standard
+# Apex Prime — The CONSUME Architecture
 
-**Author / researcher:** Haris Mekic
-**Build assistance:** Claude Opus 4.8 (lead author and engineer), with Claude Sonnet, OpenAI GPT, and Google Gemini used for cross-checks
-**Date:** 2026-06-03
-**License:** [CC-BY-4.0](./LICENSE)
+### A Professional Engineering Assessment, in Numbers
 
----
+[![Built with Claude](<https://img.shields.io/badge/built%20with-Claude%20(Anthropic)-d97757>)](https://claude.com/claude-code)
+[![Simulations](https://img.shields.io/badge/simulations-5%2F5%20reproducible-2da44e)](./simulations/)
+[![Stack](https://img.shields.io/badge/stack-Python%20stdlib%20only-3776AB?logo=python&logoColor=white)](./simulations/run_all.py)
+[![Evidence](https://img.shields.io/badge/claims-VERIFIED%20%2F%20PARTIAL%20%2F%20SIMULATED-1f6feb)](./assessment/05-limits.md)
+[![License](https://img.shields.io/badge/license-CC--BY--4.0-blue.svg)](./LICENSE)
 
-## Abstract
-
-This repository documents a structured technical audit of a production agentic operating system — referred to throughout as **the system under review (SUR)**, or **the platform** — applying a labeled-evidence standard (**VERIFIED / PARTIAL / UNVERIFIED**) to primary sources and to publicly readable code. The SUR is a single-operator, skills-based agentic platform built on top of commodity large-language-model coding harnesses (the same open-source category as OpenClaw, Hermes, and Pi.dev), but distinguished by an architecture that *consumes* open-source engineering one-way into its own design rather than shipping a harness. The audit examines the platform's structure, its operational disciplines, its human-in-the-loop gate layer, its failure-pattern regression memory, its parallel multi-agent orchestration, and its competitive defensibility. The aim is an honest, outside-in engineering assessment: what is real, what is partial, and what is unverified.
-
-*Methodology note: this audit was built by the same AI model (Claude Opus 4.8) that built the platform under review, with Sonnet, GPT, and Gemini for cross-checks. Evidence labeled VERIFIED rests on publicly readable code and public registry data that any reviewer can confirm independently; it does not rest on the AI's self-assessment. Evidence labeled PARTIAL or UNVERIFIED is explicitly bounded to that status. This is not a professionally-independent auditor engagement; it is a structured, labeled, multi-model technical review. See [doc 06](./docs/06-methodology.md) for the full methodology and [doc 08 §6](./docs/08-limits-and-reproducibility.md) for the direct rebuttal to the "an audit written with the subject's own AI is not independent" objection.*
-
-The platform was built by one person with AI assistance — not a funded team — and that asymmetry is weighted honestly throughout. Where the SUR is compared against well-resourced commercial agentic systems, those systems' maturity is treated as a roadmap to learn from, not a deficit to spin against. Every non-trivial claim in the audit documents is explicitly labeled **VERIFIED**, **PARTIAL**, or **UNVERIFIED**. Cost and token figures, where they appear, are **API-equivalent cost-to-serve** — the platform runs largely on a subscription, so these are not cash outlays, and the documents say so at each point. No claim of "beating frontier models," "full sovereignty," or "AGI" appears anywhere in this audit, by design.
+> **Architecture & design: [Haris Mekic](https://ai.mekreflect.com)** (MEKreflect) · **Assessment & simulations: Claude (Anthropic)** · 2026-06
 
 ---
 
-## Table of Contents
+**The thesis, in the architect's words: _"It's not a harness. It's CONSUME."_**
 
-| # | Document | Scope |
-|---|----------|-------|
-| 00 | [Executive Summary](./docs/00-executive-summary.md) | The audit verdict in brief — what the platform is, what holds up, the headline caveats |
-| 01 | [The System Under Review](./docs/01-system-under-review.md) | The skills-based design, the layered boot model, the lead-orchestrator pattern, the gate and memory models |
-| 02 | [Consumption Audit — What Was Consumed](./docs/02-consumption-audit.md) | The one-way open-source consumption ledger: what was consumed (pattern-only) versus built, and license compliance |
-| 03 | [Capabilities](./docs/03-capabilities.md) | BYOM routing, context-discipline sandbox, MCP integration, parallel agent orchestration, file memory, gate layer, audit surface |
-| 04 | [Scalability — A Quantitative Study](./docs/04-scalability-science.md) | Token economics, concurrency and speedup math, the own-server model, and reliability/availability engineering |
-| 05 | [Comparative Analysis](./docs/05-comparison.md) | A property matrix versus ECC, OpenClaw, Hermes and Nous, plus what GPT and independent researchers say |
-| 06 | [Methodology — Built With Claude](./docs/06-methodology.md) | How the platform was engineered with Claude Opus 4.8 and other models, and the discipline applied to AI-written code |
-| 07 | [Metrics](./docs/07-metrics.md) | The honest metrics tables, with VERIFIED / PARTIAL / UNVERIFIED labels and the API-equivalent cost caveat |
-| 08 | [Limits, Honesty Ledger & Reproducibility](./docs/08-limits-and-reproducibility.md) | What is unverified, what is single-operator-dependent, and what an outside reviewer can reproduce |
-| 09 | [Claims & Evidence Register](./docs/09-claims-register.md) | Every load-bearing claim with a VERIFIED / PARTIAL / UNVERIFIED grade and a concrete reproduction step |
-| — | [References](./docs/REFERENCES.md) | Consolidated external literature with verified URLs (Karpathy LLM-OS, AI-2027, Anthropic & Cognition on multi-agent, METR, Epoch AI, OpenClaw, Hermes/Nous, the open SKILL.md standard) |
+A _harness_ ships an environment and optimizes agents inside it. The **CONSUME architecture** inverts the relationship: harnesses, models, frameworks and the open-source ecosystem are **raw material** — consumed one-way through a license/value intake gate, re-implemented as owned modules, run behind a mechanical human-gate layer with a hard safety floor, and sealed on the way out. The model is a replaceable engine behind one knob. The memory is plain files. The autonomy is an architectural property with a mechanical conscience — not a model behavior.
 
-A consolidated PDF of the full audit is published under [`pdf/`](./pdf/).
+This repository is a professional engineering assessment of that design: what it is, how any team can implement it, what it is worth **in numbers**, and how it compares to the harness strategy at the head of the category. Every figure is generated by a [deterministic, stdlib-only simulation suite](./simulations/) you can re-run in seconds — **the numbers are an argument you can re-execute, not a brochure.**
 
 ---
 
-## Honesty & Method
+## Headline numbers
 
-This audit is written from the stance of a **structured technical auditor** examining the system from the outside, applying a labeled-evidence standard. It is not first-person, and it is not branded as any product. It is honest about its own construction: the same AI model that built the platform also authored the audit (see the methodology note in the abstract above and [doc 06](./docs/06-methodology.md)), so "independent" is reserved for the *evidence standard* — the VERIFIED claims rest on publicly readable code and public registry data, not on the AI's assessment of its own work — not for the auditor's relationship to the subject. Auditor integrity is the deliverable: the documents disclose **outcomes** (what the platform does and how well), and **withhold the proprietary build-method by design** — the specific iterative process used to produce the platform is the operator's competitive defensibility and is treated as out of scope for disclosure, not as a gap in the audit.
+|           | Finding                                                                                                                                          | Evidence                                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **4.5×**  | capability growth advantage of gated ecosystem consumption over harness-native optimization at 36 months (base scenario; 3.1–5.8× across sweeps) | [SIMULATED](./assessment/03-simulations.md#study-1--capability-growth-consume-vs-harness-native--simulated)                      |
+| **30.9×** | per-task cost spread harvested by the BYOM engine knob — $1.16 frontier-pinned vs. $0.038 on the fleet's actual engine                           | [VERIFIED arithmetic](./assessment/03-simulations.md#study-2--byom-cost-per-task--verified-arithmetic)                           |
+| **26×**   | fewer fleet tasks lost under a provider shock vs. a coupled architecture (1.2 vs. 30.6 mean days degraded)                                       | [SIMULATED, anchored](./assessment/03-simulations.md#study-3--provider-shock-resilience--simulated-anchored-to-a-measured-event) |
+| **3.0×**  | engineering leverage per owned capability via the consume intake gate (15h vs. 44h); ~3× yearly capability throughput                            | [SIMULATED](./assessment/03-simulations.md#study-4--consumption-leverage--simulated)                                             |
+| **−47%**  | expected unsafe pass-through at _maximum_ autonomy, bought by the design's always-gate-high-risk floor for ≈3 human reviews/day                  | [SIMULATED, anchored](./assessment/03-simulations.md#study-5--the-autonomy-dials-floor--simulated-anchored-to-a-published-study) |
 
-A terminology note that is load-bearing throughout: the platform **consumes** open source. It consumes patterns one-way into its own architecture and runs them on its own terms. It is *not* a harness and it does not "harness" anything — the word "harness" appears in these documents only to describe the generic tools the platform is contrasted against. That contrast *is* the central engineering distinction the audit examines: other tools ship a harness; this one consumes.
+**And the two measured proof events (2026-06-11):** the production 9-agent fleet swapped its entire reasoning engine to a different provider **same-day** (designed → implemented → sealed → verified live 9/9) four days ahead of a provider billing change; and the architecture's published Apache-2.0 reference shell passed a stranger's clean-room run — **8/8 verification, 160/160 tests** — during which the consume method found and same-day-fixed a real metering defect in its own artifact. **VERIFIED.**
 
-Claims are graded **VERIFIED** (auditor reproduced or directly inspected the behavior), **PARTIAL** (evidence supports the claim but coverage is incomplete or the test was bounded), or **UNVERIFIED** (asserted by design or documentation but not independently reproduced). Quantitative figures state their scope and assumptions inline; performance multipliers state what they measure; token and cost figures are labeled API-equivalent cost-to-serve rather than cash.
+![Provider shock resilience](./simulations/results/provider_shock.svg)
 
 ---
+
+## The assessment
+
+| #   | Document                                                                                                                             | What it answers                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 00  | [**Executive Assessment**](./assessment/00-executive-assessment.md)                                                                  | The design, the numbers, the proof events, the verdict — in four pages                                                                    |
+| 01  | [**The Architecture**](./assessment/01-architecture.md)                                                                              | Apex Prime at pattern level: the CONSUME gate, the BYOM knob, the autonomy floor, file memory, the seal, the fan-out, the regression bank |
+| 02  | [**Implementation Guide**](./assessment/02-implementation-guide.md)                                                                  | How a team adopts the architecture: six stages with acceptance criteria, three adoption profiles, the real failure modes                  |
+| 03  | [**The Numbers**](./assessment/03-simulations.md)                                                                                    | The five-study simulation report: models, anchors, results, honest readings                                                               |
+| 04  | [**CONSUME vs. Harness**](./assessment/04-consume-vs-harness.md)                                                                     | The founder thesis tested against the category's 213K-star harness flagship — with the asymmetry that decides the argument                |
+| 05  | [**Limits & Reproducibility**](./assessment/05-limits.md)                                                                            | Everything that bounds these claims, in one honest place                                                                                  |
+| —   | [References](./assessment/REFERENCES.md) · [Simulation suite](./simulations/README.md) · [v1 audit (archived)](./_archive/v1-audit/) |                                                                                                                                           |
+
+## Run the numbers yourself
+
+```bash
+git clone https://github.com/Haris88m/agentic-os-audit
+cd agentic-os-audit/simulations
+python run_all.py     # Python 3.10+, standard library only, deterministic
+```
+
+Five studies, ~3 seconds, every chart and table in this repository regenerated.
+
+---
+
+## Evidence standard
+
+Every non-trivial claim is labeled **VERIFIED** (public artifact or re-runnable computation), **PARTIAL** (supported, bounded), or **SIMULATED** (stated model; anchored parameters cited, assumptions sensitivity-swept). No claim of outperforming frontier models, of full sovereignty, or of "AGI" appears anywhere, by standing policy. The private build-method that produced the implementation is withheld by documented decision — the architecture is public at pattern level; the method is the operator's property. [Doc 05](./assessment/05-limits.md) carries the full honesty ledger, including what this assessment is _not_ (it is not an independent third-party audit, and says so).
+
+## Built with Claude
+
+The architecture, the CONSUME stance, the autonomy-policy design and the engineering direction are the work of **Haris Mekic**. The implementation, this assessment, and the simulation suite were written, tested and mechanically verified by **[Claude](https://claude.com/claude-code)** (Anthropic) operating under the architect's human-gated workflow — the same gate-layer discipline the assessment describes. The relationship is disclosed everywhere it matters: this is an architect-directed AI-authored assessment with a public evidence standard, not an independent audit.
+
+**Related:** the architecture's published reference shell — a verifiable, gate-first, BYOM agent-OS — lives at [Haris88m/servari-open](https://github.com/Haris88m/servari-open) (Apache-2.0).
 
 ## License
 
-This work is licensed under the **Creative Commons Attribution 4.0 International License (CC-BY-4.0)**. You are free to share and adapt the material for any purpose, including commercially, provided you give appropriate credit. See [`LICENSE`](./LICENSE) for the full text.
+[CC-BY-4.0](./LICENSE) — share and adapt with attribution. The simulation code in [`simulations/`](./simulations/) is yours to re-run, modify and extend under the same terms.

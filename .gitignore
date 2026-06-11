@@ -2,8 +2,8 @@
 _research/
 
 # pdf intermediates — keep the final PDF, drop the working HTML/tmp
-pdf/audit.html
-pdf/*.tmp
+**/pdf/audit.html
+**/pdf/*.tmp
 
 # OS / editor
 .DS_Store
@@ -11,3 +11,7 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# python bytecode
+__pycache__/
+*.pyc

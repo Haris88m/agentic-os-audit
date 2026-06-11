@@ -1,0 +1,55 @@
+{
+  "label": "VERIFIED arithmetic on stated assumptions",
+  "task_shape": {
+    "turns": 6,
+    "input_tokens": 12000,
+    "stable_prefix": 8000,
+    "output_tokens": 1200,
+    "cache_hit": 0.85
+  },
+  "prices_usd_per_M": {
+    "frontier": [
+      15.0,
+      75.0,
+      1.5
+    ],
+    "standard": [
+      3.0,
+      15.0,
+      0.3
+    ],
+    "light": [
+      1.0,
+      5.0,
+      0.1
+    ],
+    "deepseek-v4-pro": [
+      0.435,
+      0.87,
+      null
+    ]
+  },
+  "usd_per_task": {
+    "frontier": 1.161,
+    "standard": 0.2322,
+    "light": 0.0774,
+    "deepseek-v4-pro": 0.0376,
+    "routed-mix (70/20/10)": 0.2167,
+    "routed-mix BYOM floor": 0.1888
+  },
+  "usd_per_month": {
+    "frontier": 12538.8,
+    "standard": 2507.76,
+    "light": 835.92,
+    "deepseek-v4-pro": 405.91,
+    "routed-mix (70/20/10)": 2340.58,
+    "routed-mix BYOM floor": 2039.57
+  },
+  "ratios": {
+    "frontier_vs_deepseek_per_task": 30.9,
+    "frontier_vs_routed": 5.4,
+    "frontier_vs_routed_byom": 6.1,
+    "list_price_ratio_in": 34.5,
+    "list_price_ratio_out": 86.2
+  }
+}

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="920" height="480" fill="#ffffff"/>
+<text x="70" y="28" font-size="19" font-weight="600" fill="#1f2328">Cost per agent task by engine (BYOM knob)</text>
+<text x="70" y="48" font-size="13" fill="#57606a">Representative task: 6 turns x 12,000 in / 1,200 out tokens, 8,000-token stable prefix, cache hit 85% where discounted.</text>
+<text x="70" y="466" font-size="11" fill="#8b949e">VERIFIED arithmetic on published list prices (2026-06). API-equivalent cost-to-serve, not cash. Apex Prime assessment.</text>
+<line x1="70" y1="394.0" x2="890" y2="394.0" stroke="#eaeef2"/>
+<text x="62" y="398.0" font-size="11" fill="#57606a" text-anchor="end">$0.00</text>
+<line x1="70" y1="330.6" x2="890" y2="330.6" stroke="#eaeef2"/>
+<text x="62" y="334.6" font-size="11" fill="#57606a" text-anchor="end">$0.25</text>
+<line x1="70" y1="267.1" x2="890" y2="267.1" stroke="#eaeef2"/>
+<text x="62" y="271.1" font-size="11" fill="#57606a" text-anchor="end">$0.50</text>
+<line x1="70" y1="203.7" x2="890" y2="203.7" stroke="#eaeef2"/>
+<text x="62" y="207.7" font-size="11" fill="#57606a" text-anchor="end">$0.75</text>
+<line x1="70" y1="140.2" x2="890" y2="140.2" stroke="#eaeef2"/>
+<text x="62" y="144.2" font-size="11" fill="#57606a" text-anchor="end">$1.00</text>
+<line x1="70" y1="76.8" x2="890" y2="76.8" stroke="#eaeef2"/>
+<text x="62" y="80.8" font-size="11" fill="#57606a" text-anchor="end">$1.25</text>
+<line x1="70" y1="394" x2="890" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<line x1="70" y1="64" x2="70" y2="394" stroke="#57606a" stroke-width="1.2"/>
+<rect x="115.3" y="99.4" width="43.0" height="294.6" rx="3" fill="#1f6feb"/>
+<text x="136.8" y="94.4" font-size="10.5" fill="#1f2328" text-anchor="middle">$1.16</text>
+<text x="138.3" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">frontier</text>
+<rect x="252.0" y="335.1" width="43.0" height="58.9" rx="3" fill="#1f6feb"/>
+<text x="273.5" y="330.1" font-size="10.5" fill="#1f2328" text-anchor="middle">$0.23</text>
+<text x="275.0" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">standard</text>
+<rect x="388.7" y="374.4" width="43.0" height="19.6" rx="3" fill="#1f6feb"/>
+<text x="410.2" y="369.4" font-size="10.5" fill="#1f2328" text-anchor="middle">$0.08</text>
+<text x="411.7" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">light</text>
+<rect x="525.3" y="384.5" width="43.0" height="9.5" rx="3" fill="#1f6feb"/>
+<text x="546.8" y="379.5" font-size="10.5" fill="#1f2328" text-anchor="middle">$0.04</text>
+<text x="548.3" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">deepseek-v4-pro</text>
+<rect x="662.0" y="339.0" width="43.0" height="55.0" rx="3" fill="#1f6feb"/>
+<text x="683.5" y="334.0" font-size="10.5" fill="#1f2328" text-anchor="middle">$0.22</text>
+<text x="685.0" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">routed-mix (70/20/10)</text>
+<rect x="798.7" y="346.1" width="43.0" height="47.9" rx="3" fill="#1f6feb"/>
+<text x="820.2" y="341.1" font-size="10.5" fill="#1f2328" text-anchor="middle">$0.19</text>
+<text x="821.7" y="412" font-size="11.5" fill="#1f2328" text-anchor="middle">routed-mix BYOM floor</text>
+<text x="480" y="434" font-size="12" fill="#1f2328" text-anchor="middle">Engine / routing policy</text>
+<text x="20" y="229" font-size="12" fill="#1f2328" text-anchor="middle" transform="rotate(-90 20 229)">USD per task</text>
+<rect x="70" y="443" width="14" height="14" rx="3" fill="#1f6feb"/>
+<text x="90" y="455" font-size="12" fill="#1f2328">USD per task</text>
+</svg>

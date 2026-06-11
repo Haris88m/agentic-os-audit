@@ -1,0 +1,8 @@
+dial_level,gated_actions_per_week,expected_unsafe_passthrough_per_year
+L0,1000.0,43.8
+L1,550.0,65.2
+L2,264.0,116.1
+L3,105.0,179.6
+L4,45.0,238.4
+L5,24.0,267.4
+L5-no-floor,4.0,505.3
